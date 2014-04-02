@@ -4,7 +4,8 @@ using System.Collections;
 public class PlayerControls : MonoBehaviour {
 	public KeyCode moveUp, moveDown;
 	public float speed = 10.0f;
-
+	private float TouchPosY;
+	private float UpDown;
 
 	// Use this for initialization
 	void Start () {
@@ -13,37 +14,36 @@ public class PlayerControls : MonoBehaviour {
 	void androidControl(){
 		if (Input.touchCount > 0) {
 			for( int i=0; i < Input.touchCount; i++){
-				if(Input.GetTouch(i).phase == TouchPhase.Began){
-					rigidbody2D.velocity = new Vector2(0, Input.GetTouch (i).position.y - transform.position.y);
+			Touch touch = Input.GetTouch(i);
+			if (rigidbody2D.name == "Player01") {
+				if (touch.position.x < Screen.width / 2) {
+					TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
+					UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+					rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 				}
-				if (Input.GetTouch (i).phase == TouchPhase.Moved) {
-					if (rigidbody2D.name == "Player01") {
-						if (Input.GetTouch (i).position.x < Screen.width / 2) {
-							// Get movement of the finger since last frame
-							//Vector2 touchDeltaPosition = Input.GetTouch (i).deltaPosition;
-							// Move object across XY plane
-							rigidbody2D.velocity = new Vector2(0,Input.GetTouch (i).position.y);
-							//transform.Translate (0,touchDeltaPosition.y * speed, 0);
-						}
-					}
-					if (rigidbody2D.name == "Player02") {
-						if (Input.GetTouch (i).position.x > Screen.width / 2) {
-							// Get movement of the finger since last frame
-							//Vector2 touchDeltaPosition = Input.GetTouch (i).deltaPosition;
-			
-							// Move object across XY plane
-							rigidbody2D.velocity = new Vector2(0,Input.GetTouch (i).position.y);
-							//transform.Translate (0,touchDeltaPosition.y * speed, 0);
-						}
+			}
+			if (rigidbody2D.name == "Player02") {
+					if (touch.position.x > Screen.width / 2) {
+						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
+						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 					}
 				}
+			}
+		}else{
+			if( transform.position.y > TouchPosY && UpDown > 0 ){
+				UpDown = 0;
+				rigidbody2D.velocity = new Vector2(0,0);
+			}
+			if( transform.position.y < TouchPosY && UpDown < 0 ){
+				UpDown = 0;
+				rigidbody2D.velocity = new Vector2(0,0);
 			}
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-
 		if (Application.platform == RuntimePlatform.Android) {
 			androidControl();
 		}else{

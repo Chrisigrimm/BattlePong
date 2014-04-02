@@ -30,7 +30,6 @@ public class Bot : MonoBehaviour {
 	void FindBallPath(){
 		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
 		BallDestinationPos = hit.point;
-		Debug.DrawRay( Position, Direction);
 		if( hit ){
 			float ScalingY = Mathf.Clamp (rigidbody2D.velocity.y,1,-1);
 			float ScalingX = Mathf.Clamp (rigidbody2D.velocity.x,-1,1);
