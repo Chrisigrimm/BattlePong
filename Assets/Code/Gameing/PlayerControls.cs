@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+   //////////////
+  ////G-Tec/////
+ ////Keyjin////
+//////////////
+
 public class PlayerControls : MonoBehaviour {
 	public KeyCode moveUp, moveDown;
 	public float speed = 10.0f;

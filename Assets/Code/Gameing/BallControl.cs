@@ -1,6 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
+   //////////////
+  ////G-Tec/////
+ ////Keyjin////
+//////////////
+
 public class BallControl : MonoBehaviour {
 	public float ballSpeed = 100;
 	public int spread = 15;

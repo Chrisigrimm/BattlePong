@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+   //////////////
+  ////G-Tec/////
+ ////Keyjin////
+//////////////
+
 public class GoalManager : MonoBehaviour {
 	private GameObject Ball;
 
@@ -9,10 +14,10 @@ public class GoalManager : MonoBehaviour {
 	}
 	//Because if the Ball is faster OnTrigger doesn't catch it
 	void Update(){
-		if(Ball.transform.position.x < -Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x){
+		if(Ball.transform.position.x < -Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x && name == "leftWall"){
 			Goal();
 		}
-		if(Ball.transform.position.x > Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x){
+		if(Ball.transform.position.x > Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x && name == "rightWall"){
 			Goal();
 		}
 	}

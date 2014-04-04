@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+   //////////////
+  ////G-Tec/////
+ ////Keyjin////
+//////////////
+
 public class GameSetup : MonoBehaviour {
 
 	public Camera mainCam;
