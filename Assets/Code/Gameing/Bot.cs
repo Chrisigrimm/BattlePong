@@ -21,6 +21,8 @@ public class Bot : MonoBehaviour {
 	private Vector2 saveDir;
 	private Vector2 ReflectScale;
 	private float Reaktion;
+	private int RandPos;
+	private Vector2 saveBallDesPos;
 	// Use this for initialization
 	void Start () {
 		Ball = GameObject.FindGameObjectWithTag("Ball");
@@ -30,16 +32,40 @@ public class Bot : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		AI();
-		FindBallPath();
 		ResetAfterGoal();
 	}
-	
+
+	void AI(){
+		//--Var--//
+		Vector2 PlayerPos = new Vector2(transform.position.x,transform.position.y);
+		//--Killable--//
+		//Reaktion
+		if( Reaktion < Time.time){
+			if(Reaktion==0f){
+				Reaktion = Time.time + ReaktionTime;
+				RandPos = Mathf.RoundToInt(Random.Range( -(transform.localScale.y) , (transform.localScale.y)));
+			}
+			FindBallPath();
+		}
+		//--Move--//
+		float UpDown = Mathf.Clamp(BallDestinationPos.y-PlayerPos.y,-1,1);
+		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown);
+	}
+
 	void FindBallPath(){
-		if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1) && Reaktion < Time.time){
+		if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
 			hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
 			Debug.DrawLine(Ball.transform.position,hit.point);
 			if( hit && hit.collider.name!="Infinity"){
-				BallDestinationPos = hit.point;
+				//SetBallDestination Pos
+				//If not changed the Pos from the Old 
+				if((Mathf.RoundToInt(BallDestinationPos.y-saveBallDesPos.y) < -3 ||
+				   (BallDestinationPos.y-saveBallDesPos.y) > 3 )&&
+				   saveBallDesPos != Vector2.zero ){
+					BallDestinationPos = hit.point + new Vector2(0,RandPos);
+				}else{
+					BallDestinationPos = hit.point;
+				}
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
@@ -71,27 +97,16 @@ public class Bot : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	void ResetPath(){
+		saveBallDesPos = BallDestinationPos;
 		SaveColideName = "";
-		BallDestinationPos = new Vector2(0,0);
+		//BallDestinationPos = new Vector2(0,0);
 		Position = new Vector2(0,0);
 		Direction = new Vector2(0,0);
 		Reaktion=0f;
 	}
 
-	void AI(){
-		//--Var--//
-		Vector2 PlayerPos = new Vector2(transform.position.x,transform.position.y);
-		float UpDown = Mathf.Clamp(BallDestinationPos.y-PlayerPos.y,-1,1);
-		//--Killable--//
-		//Reaktion
-		if( Reaktion < Time.time && Reaktion==0f){
-			Reaktion = Time.time + ReaktionTime;
-		}
-		//--Move--//
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown);
-	}
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
 		if (colInfo.collider.tag == "Ball") {
