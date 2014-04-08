@@ -7,11 +7,13 @@ using System.Collections;
 //////////////
 
 public class BallControl : MonoBehaviour {
-	public float ballSpeed = 100;
+	public static float ballSpeed = 100;
 	public int spread = 15;
+	private float maxVelocity;
 	// Use this for initialization
 	void Start () {
 		GameObject.Find("CountDown").SendMessage ("cDown");
+		maxVelocity = ballSpeed/5;
 	}
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
@@ -44,17 +46,24 @@ public class BallControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (rigidbody2D.velocity.x < ballSpeed/5 && rigidbody2D.velocity.x >0){
-			rigidbody2D.velocity = new Vector2(ballSpeed/5,rigidbody2D.velocity.y);
+	}
+
+	public static float getmaxVelocity(){
+		return ballSpeed;
+	}
+
+	void FixedUpdate() {
+		if(Mathf.Abs(rigidbody2D.velocity.x) < maxVelocity || Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity)
+		{
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity *= maxVelocity;
+			rigidbody2D.velocity = newVelocity;
 		}
-		if (rigidbody2D.velocity.x > -ballSpeed/5 && rigidbody2D.velocity.x <0) {
-			rigidbody2D.velocity = new Vector2(-ballSpeed/5,rigidbody2D.velocity.y);
-		}
-		if (rigidbody2D.velocity.x > ballSpeed/5 && rigidbody2D.velocity.x >0){
-			rigidbody2D.velocity = new Vector2(ballSpeed/5,rigidbody2D.velocity.y);
-		}
-		if (rigidbody2D.velocity.x < -ballSpeed/5 && rigidbody2D.velocity.x <0) {
-			rigidbody2D.velocity = new Vector2(-ballSpeed/5,rigidbody2D.velocity.y);
+		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity || Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity)
+		{
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity *= maxVelocity;
+			rigidbody2D.velocity = newVelocity;
 		}
 	}
 }

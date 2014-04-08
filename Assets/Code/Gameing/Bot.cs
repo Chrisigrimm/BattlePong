@@ -10,6 +10,7 @@ public class Bot : MonoBehaviour {
 	public float speed = 20.0f;
 	//Normal Human ReaktionTime
 	public float ReaktionTime = 0.112f;
+	public float Difficult = 1;
 	private GameObject Ball;
 	private Vector2 BallDestinationPos;
 	private string SaveColideName ="";
@@ -22,7 +23,7 @@ public class Bot : MonoBehaviour {
 	private Vector2 ReflectScale;
 	private float Reaktion;
 	private int RandPos;
-	private Vector2 saveBallDesPos;
+	private Vector2 tempBallDestination;
 	// Use this for initialization
 	void Start () {
 		Ball = GameObject.FindGameObjectWithTag("Ball");
@@ -35,7 +36,10 @@ public class Bot : MonoBehaviour {
 		ResetAfterGoal();
 	}
 
-	void AI(){
+	void FixedUpdate(){
+	}
+
+	void AI(){ 	
 		//--Var--//
 		Vector2 PlayerPos = new Vector2(transform.position.x,transform.position.y);
 		//--Killable--//
@@ -43,29 +47,26 @@ public class Bot : MonoBehaviour {
 		if( Reaktion < Time.time){
 			if(Reaktion==0f){
 				Reaktion = Time.time + ReaktionTime;
-				RandPos = Mathf.RoundToInt(Random.Range( -(transform.localScale.y) , (transform.localScale.y)));
+				RandPos = Mathf.RoundToInt(Random.Range( -(transform.localScale.y*0.8f) , (transform.localScale.y*0.8f)));
 			}
-			FindBallPath();
+			if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
+				FindBallPath();
+			}
 		}
 		//--Move--//
 		float UpDown = Mathf.Clamp(BallDestinationPos.y-PlayerPos.y,-1,1);
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown);
+		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown );
+
 	}
 
 	void FindBallPath(){
-		if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
-			hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
-			Debug.DrawLine(Ball.transform.position,hit.point);
-			if( hit && hit.collider.name!="Infinity"){
-				//SetBallDestination Pos
-				//If not changed the Pos from the Old 
-				if((Mathf.RoundToInt(BallDestinationPos.y-saveBallDesPos.y) < -3 ||
-				   (BallDestinationPos.y-saveBallDesPos.y) > 3 )&&
-				   saveBallDesPos != Vector2.zero ){
-					BallDestinationPos = hit.point + new Vector2(0,RandPos);
-				}else{
-					BallDestinationPos = hit.point;
-				}
+		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
+		Debug.DrawLine(Ball.transform.position,BallDestinationPos); 
+		if( hit ){
+			if(BallDestinationPos != hit.point){
+				BallDestinationPos = hit.point;
+				spinBall();
+	
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
@@ -89,24 +90,37 @@ public class Bot : MonoBehaviour {
 						Direction = new Vector2(Ball.rigidbody2D.velocity.x,Ball.rigidbody2D.velocity.y);
 					}
 				}
-			}else{
-				if(Ball.rigidbody2D.velocity.x!=0){
-					Position = Ball.transform.position;
-					Direction = Ball.rigidbody2D.velocity;
-				}
+			}
+		}else{
+			if( Ball.rigidbody2D.velocity.x > 0 && tempBallDestination==Vector2.zero){
+				Position = Ball.transform.position;
+				Direction = Ball.rigidbody2D.velocity;
 			}
 		}
 	}
 	
 	void ResetPath(){
-		saveBallDesPos = BallDestinationPos;
 		SaveColideName = "";
-		//BallDestinationPos = new Vector2(0,0);
-		Position = new Vector2(0,0);
-		Direction = new Vector2(0,0);
+		Position = Vector2.zero;
+		Direction = Vector2.zero;
 		Reaktion=0f;
-	}
+		tempBallDestination = Vector2.zero;
+	}	
 
+	void spinBall(){
+		if(tempBallDestination == Vector2.zero){
+			tempBallDestination = BallDestinationPos;
+		}
+		if((new Vector2(transform.position.x,transform.position.y)-BallDestinationPos).magnitude >=
+		   ((new Vector2(Ball.transform.position.x,Ball.transform.position.y)-BallDestinationPos)).magnitude){
+			BallDestinationPos = tempBallDestination;
+			tempBallDestination = Vector2.zero;
+		}else{
+			if(Mathf.Round(BallDestinationPos.sqrMagnitude) != Mathf.Round(new Vector2(transform.position.x,transform.position.y).sqrMagnitude)){
+				BallDestinationPos = transform.position;
+			}
+		}
+	}
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
 		if (colInfo.collider.tag == "Ball") {
@@ -118,6 +132,7 @@ public class Bot : MonoBehaviour {
 		if(SaveScore != GameManager.getScore()){
 			SaveScore = GameManager.getScore();
 			ResetPath();
+			BallDestinationPos = Vector2.zero;
 		}
 	}
 }
