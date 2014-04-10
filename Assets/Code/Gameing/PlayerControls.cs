@@ -25,6 +25,7 @@ public class PlayerControls : MonoBehaviour {
 			androidControl();
 		}else{
 			computerControl();
+			//computerControl();
 		}
 	}
 
@@ -51,11 +52,11 @@ public class PlayerControls : MonoBehaviour {
 			for( int i=0; i < Input.touchCount; i++){
 				Touch touch = Input.GetTouch(i);
 				if (rigidbody2D.name == "Player01") {
+					UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
 					if (touch.position.x < Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
-						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
-						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 					}
+					rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 				}
 				if (rigidbody2D.name == "Player02") {
 					if (touch.position.x > Screen.width / 2) {
