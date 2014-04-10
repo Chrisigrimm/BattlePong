@@ -12,8 +12,8 @@ namespace Assets.Code.States{
 		public LocalCoopState(StateManager managerRef) // Constructor
 		{
 			manager = managerRef;
-			if (Application.loadedLevelName != "LocalCoopGame") {
-				Application.LoadLevel("LocalCoopGame");
+			if (Application.loadedLevelName != "LocalCoop") {
+				Application.LoadLevel("LocalCoop");
 			}
 		}
 		public void StateUpdate(){
