@@ -9,6 +9,7 @@ namespace Assets.Code.States{
 		
 		public MenüSate(StateManager managerRef) // Constructor
 		{
+			Screen.orientation = ScreenOrientation.Portrait;
 			manager = managerRef;
 			if (Application.loadedLevelName != "Menü") {
 				Application.LoadLevel("Menü");
@@ -22,12 +23,15 @@ namespace Assets.Code.States{
 
 		public void ShowIt(){
 		}
-
+			
 		public void getClick(string ObjectName){
-			if (ObjectName == "Button - Play") {
+			if (ObjectName == "SinglePlayer") {
+				manager.SwitchState (new SinglePlayerState (manager));
+			}
+			if (ObjectName == "LocalCoop") {
 				manager.SwitchState (new LocalCoopState (manager));
 			}
-			if (ObjectName == "Button - Exit") {
+			if (ObjectName == "Exit") {
 				Application.Quit();
 			}
 		}

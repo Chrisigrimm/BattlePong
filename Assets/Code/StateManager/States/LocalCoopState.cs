@@ -11,6 +11,7 @@ namespace Assets.Code.States{
 
 		public LocalCoopState(StateManager managerRef) // Constructor
 		{
+			Screen.orientation = ScreenOrientation.LandscapeLeft;
 			manager = managerRef;
 			if (Application.loadedLevelName != "LocalCoop") {
 				Application.LoadLevel("LocalCoop");
