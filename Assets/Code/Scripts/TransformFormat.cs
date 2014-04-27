@@ -23,4 +23,8 @@ public class TransformFormat : MonoBehaviour {
 			}
 		}
 	}
+	public static Vector2 getTransVel(Vector2 Velocity){
+		Vector2 aspectRatio = AspectRatio.GetAspectRatio (Screen.width, Screen.height);
+		return new Vector2 (Velocity.x*(aspectRatio.x / 16f),Velocity.y*(aspectRatio.y / 9f));
+	}
 }

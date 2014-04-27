@@ -7,22 +7,41 @@ using System.Collections;
 //////////////
 
 public class BallControl : MonoBehaviour {
-	public static float ballSpeed = 100;
+	public float ballSpeed = 100;
 	public int spread = 15;
+	public AudioClip Hit1;
+	public AudioClip Hit2;
 	private float maxVelocity;
+	private AudioSource Sound;
+	private static float sballSpeed;
 	// Use this for initialization
 	void Start () {
+		sballSpeed = ballSpeed;
 		GameObject.Find("CountDown").SendMessage ("cDown");
 		maxVelocity = ballSpeed/5;
+		Sound = GetComponent<AudioSource> ();
 	}
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
-			if (colInfo.collider.tag == "Player") {
+		if (colInfo.collider.tag == "Player") {
 			Vector2 vColInfo = colInfo.collider.rigidbody2D.velocity;
 			Vector2 vBall = rigidbody2D.velocity;
 			vBall.y = vBall.y/2 + vColInfo.y/3;
 			rigidbody2D.velocity = vBall;
-			}
+		}
+		int randSound = Random.Range (1, 1);
+		switch (randSound) {
+		case 1:
+			Sound.clip = Hit1;
+			break;
+		case 2:
+			Sound.clip = Hit2;
+			break;
+		default:
+			Sound.clip = Hit1;
+			break;
+		}
+		Sound.Play();
 	}
 
 	public void ResetBall(){
@@ -49,7 +68,7 @@ public class BallControl : MonoBehaviour {
 	}
 
 	public static float getmaxVelocity(){
-		return ballSpeed;
+		return sballSpeed;
 	}
 
 	void FixedUpdate() {
