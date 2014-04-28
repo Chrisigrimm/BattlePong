@@ -8,16 +8,24 @@ namespace Assets.Code.States{
 		private StateManager manager;
 		bool toggleESC;
 		float savedTimeScale;
+		float initialize;
 
 		public SinglePlayerState(StateManager managerRef) // Constructor
 		{
 			Screen.orientation = ScreenOrientation.LandscapeLeft;
 			manager = managerRef;
-			if (Application.loadedLevelName != "SinglePlayer") {
-				Application.LoadLevel("SinglePlayer");
-			}
+			//New Screen Res... wait
+			initialize = Time.time + 0.1f;
 		}
+
 		public void StateUpdate(){
+			if( initialize > Time.time ){
+				initialize = 0f;
+				if (Application.loadedLevelName != "SinglePlayer") {
+					Application.LoadLevel("SinglePlayer");
+				}
+			}
+
 			if (Input.GetKeyDown ("escape")){
 				toggleESC=!toggleESC;
 				if( toggleESC == true ){

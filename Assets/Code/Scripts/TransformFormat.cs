@@ -8,11 +8,6 @@ public class TransformFormat : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		StartCoroutine(Scale());
-	}
-	IEnumerator Scale()
-	{
-		yield return new WaitForSeconds(0.1f);
 		aspectRatio = AspectRatio.GetAspectRatio (Screen.width, Screen.height);
 		
 		Camera.main.orthographicSize = (1080 * (aspectRatio.y / 9f) / 2) / 100;
@@ -24,7 +19,9 @@ public class TransformFormat : MonoBehaviour {
 			}
 		}
 	}
+
 	public static Vector2 getTransVel(Vector2 Velocity){
 		return new Vector2 (Velocity.x*(aspectRatio.x / 16f),Velocity.y*(aspectRatio.y / 9f));
 	}
 }
+

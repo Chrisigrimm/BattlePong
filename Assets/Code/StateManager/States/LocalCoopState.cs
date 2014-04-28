@@ -8,16 +8,24 @@ namespace Assets.Code.States{
 		private StateManager manager;
 		bool toggleESC;
 		float savedTimeScale;
+		float initialize;
 
 		public LocalCoopState(StateManager managerRef) // Constructor
 		{
 			Screen.orientation = ScreenOrientation.LandscapeLeft;
 			manager = managerRef;
-			if (Application.loadedLevelName != "LocalCoop") {
-				Application.LoadLevel("LocalCoop");
-			}
+			//New Screen Res... wait
+			initialize = Time.time + 0.1f;
 		}
+
 		public void StateUpdate(){
+			if( initialize > Time.time ){
+				initialize = 0f;
+				if (Application.loadedLevelName != "LocalCoop") {
+					Application.LoadLevel("LocalCoop");
+				}
+			}
+
 			if (Input.GetKeyDown ("escape")){
 				toggleESC=!toggleESC;
 				if( toggleESC == true ){
