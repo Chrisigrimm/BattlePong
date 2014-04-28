@@ -35,9 +35,9 @@ public class PlayerControls : MonoBehaviour {
 			HitWall = "";
 		}
 		if (Application.platform == RuntimePlatform.Android) {
-				androidControl ();
+			androidControl ();
 		} else {
-				computerControl ();
+			computerControl ();
 		}
 	}
 
@@ -61,40 +61,36 @@ public class PlayerControls : MonoBehaviour {
 			for( int i=0; i < Input.touchCount; i++){
 				Touch touch = Input.GetTouch(i);
 				if (rigidbody2D.name == "Player01") {
-					UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
 					if (touch.position.x < Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
+						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+						if (HitWall=="TopWall" && UpDown!=-1) {
+							UpDown=0;
+						} else if (HitWall=="ButtomWall" && UpDown!=1){
+							UpDown=0;
+						}
+						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 					}
-					if (((TopWall.transform.position.y - TopWall.transform.localScale.y) < 
-					     (transform.position.y + transform.localScale.y))&& UpDown!=-1) {
-						UpDown=0;
-					} else if (((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
-					     (transform.position.y - transform.localScale.y)) && UpDown!=1){
-						UpDown=0;
-					}
-					rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 				}
 				if (rigidbody2D.name == "Player02") {
-					UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
 					if (touch.position.x > Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
+						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+						if (HitWall=="TopWall" && UpDown!=-1) {
+							UpDown=0;
+						} else if (HitWall=="ButtomWall" && UpDown!=1){
+							UpDown=0;
+						}
+						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 					}
-					if (((TopWall.transform.position.y - TopWall.transform.localScale.y) < 
-					     (transform.position.y + transform.localScale.y))&& UpDown!=-1) {
-						UpDown=0;
-					} else if (((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
-					            (transform.position.y - transform.localScale.y)) && UpDown!=1){
-						UpDown=0;
-					}
-					rigidbody2D.velocity = new Vector2(0, speed * UpDown);
 				}
 			}
 		}else{
-			if( transform.position.y >= TouchPosY && UpDown > 0 ){
+			if(( transform.position.y >= TouchPosY && UpDown > 0) || HitWall=="TopWall" ){
 				UpDown = 0;
 				rigidbody2D.velocity = new Vector2(0,0);
 			}
-			if( transform.position.y <= TouchPosY && UpDown < 0 ){
+			if( (transform.position.y <= TouchPosY && UpDown < 0 ) || HitWall=="ButtomWall" ){
 				UpDown = 0;
 				rigidbody2D.velocity = new Vector2(0,0);
 			}

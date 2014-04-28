@@ -51,14 +51,14 @@ namespace Assets.Code.States{
 		}
 
 		void PausedGame() {
-			NGUITools.SetActive(GameSetup.pausedPanel,true);
+			NGUITools.SetActive(GameManager.pausedPanel,true);
 			savedTimeScale = Time.timeScale;
 			Time.timeScale = 0;
 			AudioListener.pause = true;
 		}
 		
 		void UnPauseGame() {
-			NGUITools.SetActive(GameSetup.pausedPanel,false);
+			NGUITools.SetActive(GameManager.pausedPanel,false);
 			Time.timeScale = savedTimeScale;
 			AudioListener.pause = false;
 		}

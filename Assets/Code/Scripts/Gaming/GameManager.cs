@@ -5,6 +5,14 @@ public class GameManager : MonoBehaviour {
 	static int Score01;
 	static int Score02;
 	public GUISkin theSkin;
+	public static GameObject pausedPanel;
+
+	void Start(){
+		ResetScore ();
+		pausedPanel = GameObject.Find("Window - Paused");
+		NGUITools.SetActive(pausedPanel,false);
+	}
+
 	// Set Score
 	public static void Score(string wallName){
 		if (wallName == "leftWall") {Score02 += 1;}
