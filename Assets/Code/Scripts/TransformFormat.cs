@@ -4,6 +4,7 @@ using System.Collections;
 public class TransformFormat : MonoBehaviour {
 
 	private Object[] Sprites;
+	private static Vector2 aspectRatio;
 
 	// Use this for initialization
 	void Start () {
@@ -12,7 +13,7 @@ public class TransformFormat : MonoBehaviour {
 	IEnumerator Scale()
 	{
 		yield return new WaitForSeconds(0.1f);
-		Vector2 aspectRatio = AspectRatio.GetAspectRatio (Screen.width, Screen.height);
+		aspectRatio = AspectRatio.GetAspectRatio (Screen.width, Screen.height);
 		
 		Camera.main.orthographicSize = (1080 * (aspectRatio.y / 9f) / 2) / 100;
 		Sprites = FindObjectsOfType (typeof(GameObject));
@@ -24,7 +25,6 @@ public class TransformFormat : MonoBehaviour {
 		}
 	}
 	public static Vector2 getTransVel(Vector2 Velocity){
-		Vector2 aspectRatio = AspectRatio.GetAspectRatio (Screen.width, Screen.height);
 		return new Vector2 (Velocity.x*(aspectRatio.x / 16f),Velocity.y*(aspectRatio.y / 9f));
 	}
 }

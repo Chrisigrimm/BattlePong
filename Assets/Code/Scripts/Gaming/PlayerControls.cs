@@ -69,7 +69,7 @@ public class PlayerControls : MonoBehaviour {
 						} else if (HitWall=="ButtomWall" && UpDown!=1){
 							UpDown=0;
 						}
-						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
+						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
 					}
 				}
 				if (rigidbody2D.name == "Player02") {
@@ -81,7 +81,7 @@ public class PlayerControls : MonoBehaviour {
 						} else if (HitWall=="ButtomWall" && UpDown!=1){
 							UpDown=0;
 						}
-						rigidbody2D.velocity = new Vector2(0, speed * UpDown);
+						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
 					}
 				}
 			}

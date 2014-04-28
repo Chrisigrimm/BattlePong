@@ -25,6 +25,7 @@ public class Bot : MonoBehaviour {
 	private int RandPos;
 	private Vector2 tempBallDestination;
 	private GameObject TopWall, ButtomWall;
+	private int letItSpin;
 	// Use this for initialization
 	void Start () {
 		TopWall = GameObject.Find ("topWall");
@@ -58,11 +59,10 @@ public class Bot : MonoBehaviour {
 		//--Move--//
 		float UpDown = Mathf.Clamp(BallDestinationPos.y-transform.position.y,-1,1);
 		if (((TopWall.transform.position.y - TopWall.transform.localScale.y) < 
-		     (transform.position.y + transform.localScale.y))&& UpDown!=-1) {
+		     (transform.position.y + transform.localScale.y))&& UpDown>0) {
 			UpDown=0;
-		}
-		if (((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
-		     (transform.position.y - transform.localScale.y)) && UpDown!=1){
+		}else if (((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
+		     (transform.position.y - transform.localScale.y)) && UpDown<0){
 			UpDown=0;
 		}
 		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown );
@@ -72,15 +72,15 @@ public class Bot : MonoBehaviour {
 		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
 		Debug.DrawLine(Position,BallDestinationPos);
 		if( hit ){
-			if(BallDestinationPos != hit.point){
+			if(BallDestinationPos != hit.point && tempBallDestination == Vector2.zero){
 				BallDestinationPos = hit.point;
-				spinBall();
+				letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
 
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
 						float ScalingX = Mathf.Clamp (Ball.rigidbody2D.velocity.x,1,-1);
-						ReflectScale = new Vector2((Ball.GetComponent<CircleCollider2D>().radius)*ScalingX , (Ball.GetComponent<CircleCollider2D>().radius)*ScalingY );
+						ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
 						SaveColideName = hit.collider.name;
 						savePos = hit.point+ReflectScale;
 						saveDir = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);
@@ -93,6 +93,10 @@ public class Bot : MonoBehaviour {
 					}
 					Position = savePos;
 					Direction = saveDir;
+				}
+			}else{
+				if(letItSpin==3){
+					spinBall();
 				}
 			}
 		}else{
@@ -115,8 +119,8 @@ public class Bot : MonoBehaviour {
 		if(tempBallDestination == Vector2.zero){
 			tempBallDestination = BallDestinationPos;
 		}
-		if(Vector2.Distance(new Vector2(transform.position.x,transform.position.y),BallDestinationPos) >=
-		   Vector2.Distance(new Vector2(Ball.transform.position.x,Ball.transform.position.y),BallDestinationPos)){
+		if((Vector2.Distance(new Vector2(transform.position.x,transform.position.y),tempBallDestination))/speed >=
+		   Vector2.Distance(new Vector2(Ball.transform.position.x,Ball.transform.position.y),tempBallDestination)/BallControl.getmaxVelocity()){
 			BallDestinationPos = tempBallDestination;
 			tempBallDestination = Vector2.zero;
 		}else{

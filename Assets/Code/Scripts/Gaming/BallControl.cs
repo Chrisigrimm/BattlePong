@@ -18,9 +18,9 @@ public class BallControl : MonoBehaviour {
 	void Start () {
 		ballSpeed = TransformFormat.getTransVel(new Vector2(ballSpeed,0)).x;
 		spread = Mathf.FloorToInt(TransformFormat.getTransVel(new Vector2(0,spread)).y);
-		sballSpeed = ballSpeed;
 		GameObject.Find("CountDown").SendMessage ("cDown");
 		maxVelocity = ballSpeed/5;
+		sballSpeed = maxVelocity;
 		Sound = GetComponent<AudioSource> ();
 	}
 
