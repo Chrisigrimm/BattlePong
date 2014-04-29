@@ -15,11 +15,11 @@ namespace Assets.Code.States{
 			Screen.orientation = ScreenOrientation.LandscapeLeft;
 			manager = managerRef;
 			//New Screen Res... wait
-			initialize = Time.time + 0.1f;
+			initialize = Time.time + 0.5f;
 		}
 
 		public void StateUpdate(){
-			if( initialize > Time.time ){
+			if( initialize < Time.time ){
 				initialize = 0f;
 				if (Application.loadedLevelName != "LocalCoop") {
 					Application.LoadLevel("LocalCoop");
