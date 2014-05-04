@@ -6,9 +6,10 @@ public class MoveRopes : MonoBehaviour {
 	public GameObject Player;
 	public bool UpRope;
 	public bool DownRope;
+	public GameObject Anker;
 	private Vector3 Startpos;
 	private int side;
-	// Use this for initialization
+	// Use this for initializationss
 	void Start () {
 		Startpos = transform.position;
 		if(Player.name=="Player01"){
@@ -21,9 +22,9 @@ public class MoveRopes : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(UpRope){
-			transform.position =  Startpos + new Vector3(Player.transform.position.y*side,0,0);
+			transform.position = new Vector3(Anker.transform.position.x+Player.transform.position.y*side,Anker.transform.position.y,Anker.transform.position.z);
 		}else if(DownRope){
-			transform.position =  Startpos + new Vector3(-Player.transform.position.y*side,0,0);
+			transform.position = new Vector3(Anker.transform.position.x-Player.transform.position.y*side,Anker.transform.position.y,Anker.transform.position.z);
 		}
 	}
 }
