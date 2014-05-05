@@ -58,12 +58,14 @@ public class Bot : MonoBehaviour {
 		}
 		//--Move--//
 		float UpDown = Mathf.Clamp(BallDestinationPos.y-transform.position.y,-1,1);
-		if (((TopWall.transform.position.y - TopWall.transform.localScale.y) < 
-		     (transform.position.y + transform.localScale.y))&& UpDown>0) {
-			UpDown=0;
-		}else if (((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
-		     (transform.position.y - transform.localScale.y)) && UpDown<0){
-			UpDown=0;
+		if (((TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) <
+		     (transform.position.y + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y))&& UpDown>0) {
+			transform.position = new Vector2(transform.position.x,(TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
+			UpDown = 0;
+		}else if(((ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) >
+		         (transform.position.y - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y))&& UpDown<0) {
+			transform.position = new Vector2(transform.position.x,(ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
+			UpDown = 0;
 		}
 		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown );
 	}
@@ -72,15 +74,15 @@ public class Bot : MonoBehaviour {
 		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
 		Debug.DrawLine(Position,BallDestinationPos);
 		if( hit ){
-			if(BallDestinationPos != hit.point && tempBallDestination == Vector2.zero){
+			if( BallDestinationPos!=hit.point && tempBallDestination == Vector2.zero){
 				BallDestinationPos = hit.point;
 				letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
-
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
 						float ScalingX = Mathf.Clamp (Ball.rigidbody2D.velocity.x,1,-1);
-						ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
+						ReflectScale = new Vector2((Ball.GetComponent<CircleCollider2D>().radius)*Ball.transform.localScale.x*ScalingX,(Ball.GetComponent<CircleCollider2D>().radius*0.5f)*Ball.transform.localScale.y*ScalingY);
+						//ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
 						SaveColideName = hit.collider.name;
 						savePos = hit.point+ReflectScale;
 						saveDir = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);
@@ -124,7 +126,7 @@ public class Bot : MonoBehaviour {
 			BallDestinationPos = tempBallDestination;
 			tempBallDestination = Vector2.zero;
 		}else{
-			BallDestinationPos = transform.position + new Vector3(transform.localScale.x/2,0,0)*Mathf.Clamp(Direction.x,1,-1);
+			BallDestinationPos = transform.position + new Vector3((GetComponents<BoxCollider2D>()[0].size.x*0.5f)*transform.localScale.x,0,0)*Mathf.Clamp(Direction.x,1,-1);
 		}
 	}
 

@@ -25,11 +25,13 @@ public class PlayerControls : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		if ((TopWall.transform.position.y - TopWall.transform.localScale.y) < 
-		    (transform.position.y + transform.localScale.y)) {
-			HitWall = "TopWall";
-		}else if ((ButtomWall.transform.position.y + ButtomWall.transform.localScale.y) > 
-		    (transform.position.y - transform.localScale.y)) {
+		if ((TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) <
+				(transform.position.y + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y)) {
+			transform.position = new Vector2(transform.position.x,(TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
+				HitWall = "TopWall";
+		}else if((ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) >
+		         (transform.position.y - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y)) {
+			transform.position = new Vector2(transform.position.x,(ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
 			HitWall = "ButtomWall";
 		}else{
 			HitWall = "";
