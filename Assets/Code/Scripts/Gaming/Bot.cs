@@ -81,8 +81,8 @@ public class Bot : MonoBehaviour {
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
 						float ScalingX = Mathf.Clamp (Ball.rigidbody2D.velocity.x,1,-1);
-						ReflectScale = new Vector2((Ball.GetComponent<CircleCollider2D>().radius)*Ball.transform.localScale.x*ScalingX,(Ball.GetComponent<CircleCollider2D>().radius*0.5f)*Ball.transform.localScale.y*ScalingY);
-						//ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
+						//ReflectScale = new Vector2((Ball.GetComponent<CircleCollider2D>().radius)*Ball.transform.localScale.x*ScalingX,(Ball.GetComponent<CircleCollider2D>().radius*0.5f)*Ball.transform.localScale.y*ScalingY);
+						ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
 						SaveColideName = hit.collider.name;
 						savePos = hit.point+ReflectScale;
 						saveDir = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);

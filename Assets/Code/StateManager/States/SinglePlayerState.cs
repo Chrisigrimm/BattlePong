@@ -43,17 +43,17 @@ namespace Assets.Code.States{
 		}
 
 		public void getClick(string ObjectName){
-			if (ObjectName == "Button - Restart") {
+			if (ObjectName == "Restart") {
 				UnPauseGame();
 				GameManager.ResetScore();
 				manager.Restart();
 			}
-			if( ObjectName == "Button - Menu"){
+			if( ObjectName == "Menü"){
 				UnPauseGame();
 				Screen.orientation = ScreenOrientation.Portrait;
 				manager.SwitchState (new MenüSate (manager));
 			}
-			if (ObjectName == "Button - Exit") {
+			if (ObjectName == "Exit") {
 				UnPauseGame();
 				Application.Quit();
 			}
