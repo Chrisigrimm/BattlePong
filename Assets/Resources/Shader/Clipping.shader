@@ -62,7 +62,7 @@
 
 		        fixed4 frag (v2f IN) : COLOR
 		        {
-		             if (((IN.texcoord.y>IN.wpos.y+_LocalPos1.y+IN.texcoord.y)&& _LocalPos1.y!=0)){
+		            if (((IN.texcoord.y>IN.wpos.y+_LocalPos1.y+IN.texcoord.y)&& _LocalPos1.y!=0)){
 		                fixed4 colorTransparent = fixed4(0,0,0,0) ;
 		                return  colorTransparent * tex2D(_MainTex, IN.texcoord) ;
 		            } else if (((IN.texcoord.y<IN.wpos.y+_LocalPos2.y+IN.texcoord.y)&& _LocalPos2.y!=0)){
