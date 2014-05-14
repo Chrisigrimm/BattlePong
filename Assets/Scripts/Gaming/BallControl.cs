@@ -16,8 +16,8 @@ public class BallControl : MonoBehaviour {
 	private static float sballSpeed;
 	// Use this for initialization
 	void Start () {
-		ballSpeed = TransformFormat.getTransVel(new Vector2(ballSpeed,0)).x;
-		spread = Mathf.FloorToInt(TransformFormat.getTransVel(new Vector2(0,spread)).y);
+		ballSpeed = ScaleToFormat.getVel(new Vector2(ballSpeed,0),new Vector2(16,9)).x;
+		spread = Mathf.FloorToInt(ScaleToFormat.getVel(new Vector2(0,spread),new Vector2(16,9)).y);
 		GameObject.Find("CountDown").SendMessage ("cDown");
 		maxVelocity = ballSpeed/5;
 		sballSpeed = maxVelocity;

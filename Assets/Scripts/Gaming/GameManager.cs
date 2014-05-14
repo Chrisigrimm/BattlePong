@@ -9,8 +9,10 @@ public class GameManager : MonoBehaviour {
 
 	void Start(){
 		ResetScore ();
-		pausedPanel = GameObject.Find("Window - Paused");
-		NGUITools.SetActive(pausedPanel,false);
+		if (Application.loadedLevelName == "Game" ){
+			pausedPanel = GameObject.Find("Window - Paused");
+			NGUITools.SetActive(pausedPanel,false);
+		}
 	}
 
 	// Set Score

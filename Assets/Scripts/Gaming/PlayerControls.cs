@@ -17,7 +17,7 @@ public class PlayerControls : MonoBehaviour {
 	private string HitWall;
 	// Use this for initialization
 	void Start () {
-		speed = TransformFormat.getTransVel(new Vector2(0,speed)).y;
+		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		TopWall = GameObject.Find ("topWall");
 		ButtomWall = GameObject.Find ("buttomWall");
 		Ball = GameObject.FindGameObjectWithTag("Ball");

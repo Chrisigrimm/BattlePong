@@ -43,7 +43,6 @@ namespace Assets.Code.States{
 				PlyControls.moveDown = KeyCode.DownArrow;
 				PlyControls.speed = 20f;
 			}
-
 			if (Input.GetKeyDown ("escape")){
 				toggleESC=!toggleESC;
 				if( toggleESC == true ){

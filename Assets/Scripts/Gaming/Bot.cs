@@ -30,7 +30,7 @@ public class Bot : MonoBehaviour {
 	void Start () {
 		TopWall = GameObject.Find ("topWall");
 		ButtomWall = GameObject.Find ("buttomWall");
-		speed = TransformFormat.getTransVel(new Vector2(0,speed)).y;
+		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		Ball = GameObject.FindGameObjectWithTag("Ball");
 		SaveScore = GameManager.getScore();
 	}

@@ -7,8 +7,10 @@ namespace Assets.Code.States{
 		
 		private StateManager manager;
 
+
 		public MenüSate(StateManager managerRef) // Constructor
 		{
+			//PhotonNetwork.ConnectUsingSettings("1");
 			Screen.orientation = ScreenOrientation.Portrait;
 			manager = managerRef;
 			if (Application.loadedLevelName != "Menü") {
@@ -28,6 +30,9 @@ namespace Assets.Code.States{
 			if (ObjectName == "SinglePlayer") {
 				manager.SwitchState (new SinglePlayerState (manager));
 			}
+			/*if (ObjectName == "MultiPlayer") {
+				manager.SwitchState (new MultiplayerState (manager));
+			}*/
 			if (ObjectName == "LocalCoop") {
 				manager.SwitchState (new LocalCoopState (manager));
 			}
@@ -35,5 +40,6 @@ namespace Assets.Code.States{
 				Application.Quit();
 			}
 		}
+	
 	}
 }

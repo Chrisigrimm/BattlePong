@@ -17,11 +17,13 @@ namespace Assets.Code.States{
 			manager = managerRef;
 			//New Screen Res... wait
 			initialize = Time.time + 0.5f;
+
 		}
 
 		public void StateUpdate(){
 			if( initialize < Time.time ){
 				initialize = 0f;
+
 				if (Application.loadedLevelName != "Game") {
 					Application.LoadLevel("Game");
 				}
@@ -55,10 +57,10 @@ namespace Assets.Code.States{
 			}
 		}
 
-		public void StateLateUpdate(){
+		public void ShowIt(){
 		}
 
-		public void ShowIt(){
+		public void StateLateUpdate(){
 		}
 
 		public void getClick(string ObjectName){
