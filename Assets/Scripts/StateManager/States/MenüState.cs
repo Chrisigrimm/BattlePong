@@ -6,18 +6,23 @@ namespace Assets.Code.States{
 	public class MenüSate : IStateBase{
 		
 		private StateManager manager;
-
+		float initialize;
 
 		public MenüSate(StateManager managerRef) // Constructor
 		{
 			//PhotonNetwork.ConnectUsingSettings("1");
 			Screen.orientation = ScreenOrientation.Portrait;
 			manager = managerRef;
-			if (Application.loadedLevelName != "Menü") {
-				Application.LoadLevel("Menü");
-			}
+			//New Screen Res... wait
+			initialize = Time.time + 0.5f;
 		}
 		public void StateUpdate(){
+			if( initialize < Time.time ){
+				initialize = 0f;
+				if (Application.loadedLevelName != "Menü") {
+					Application.LoadLevel("Menü");
+				}
+			}
 		}
 
 		public void StateLateUpdate(){

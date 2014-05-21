@@ -12,22 +12,20 @@ public class BattlePongScale : MonoBehaviour {
 			switch(LoadedLevel){
 				case "Menü":
 					Camera Cam = GameObject.Find("Camera").GetComponent<Camera>();
-					ScaleToFormat.getAspectRatio(Cam);
+					Vector2 aspect = ScaleToFormat.getAspectRatio();
 					Screen.sleepTimeout = (int)SleepTimeout.NeverSleep;
+					
 					if(ScaleToFormat.isLandScape()){
 						break;
 					}
 					ScaleToFormat.setNewOrthographicSize(Cam,100f,16f);
-					GmObjs = FindObjectsOfType (typeof(GameObject));
+					GmObjs = GameObject.FindGameObjectsWithTag("Anchor");
 					foreach(GameObject GmObj in GmObjs){
-						UIAnchor SpRE = GmObj.GetComponent<UIAnchor>();
-						if( SpRE ){
-							ScaleToFormat.reScaleToFormat(new Vector2(10,16),GmObj);
-						}
+						ScaleToFormat.reScaleToFormat(new Vector2(10,16),GmObj);
 					}
 					break;
 				case "Game":
-					ScaleToFormat.getAspectRatio(Camera.main);
+					ScaleToFormat.getAspectRatio();
 					ScaleToFormat.setNewOrthographicSize(Camera.main,1080f,9f);
 					GmObjs = FindObjectsOfType (typeof(GameObject));
 					foreach(GameObject GmObj in GmObjs){
@@ -42,7 +40,7 @@ public class BattlePongScale : MonoBehaviour {
 					}
 					break;
 				case "GameMulti":
-					ScaleToFormat.getAspectRatio(Camera.main);
+					ScaleToFormat.getAspectRatio();
 					ScaleToFormat.setNewOrthographicSize(Camera.main,1080f,9f);
 						GmObjs = FindObjectsOfType (typeof(GameObject));
 						foreach(GameObject GmObj in GmObjs){

@@ -4,26 +4,21 @@ using System.Collections;
 public class ScaleToFormat {
 	private static Vector2 aspectRatio;
 
-	public static Vector2 getAspectRatio(Camera Cam){
-		if (Cam.aspect >= 1.7) {aspectRatio = new Vector2(16,9);}//16:9
+	public static Vector2 getAspectRatio(){
+		/*if (Cam.aspect >= 1.7) {aspectRatio = new Vector2(16,9);}//16:9
 		else if (Cam.aspect >= 1.6){aspectRatio = new Vector2(16,10);}//16:10
 		else if (Cam.aspect >= 1.5){aspectRatio = new Vector2(3,2);}//3:2
 		else if(Cam.aspect >= 1.333){aspectRatio = new Vector2(4,3);}//4:3
 		else if (Cam.aspect >= 1.25){aspectRatio = new Vector2(5,4);}//5:4
 		else if (Cam.aspect >= 0.666){aspectRatio = new Vector2(2,3);}//2:3
-		else{aspectRatio = new Vector2(10,16);}//10:16
+		else{aspectRatio = new Vector2(10,16);}//10:16*/
+		aspectRatio = AspectRatio.GetAspectRatio(Screen.width, Screen.height);
 
 		return aspectRatio;
 	}
 
 	public static bool isLandScape(){
-		if (aspectRatio == new Vector2 (16, 10)) {
-			return true;
-		}else if(aspectRatio == new Vector2 (16,9)){
-			return true;
-		}else if(aspectRatio == new Vector2 (3,2)){
-			return true;
-		}else if(aspectRatio == new Vector2 (4,3)){
+		if (aspectRatio.x > aspectRatio.y) {
 			return true;
 		}else{
 			return false;
