@@ -6,22 +6,30 @@ namespace Assets.Code.States{
 	public class MenüSate : IStateBase{
 		
 		private StateManager manager;
-		float initialize;
+		private float initialize;
+		private bool scriptsLoaded;
 
 		public MenüSate(StateManager managerRef) // Constructor
 		{
-			//PhotonNetwork.ConnectUsingSettings("1");
 			Screen.orientation = ScreenOrientation.Portrait;
 			manager = managerRef;
 			//New Screen Res... wait
-			initialize = Time.time + 0.5f;
 		}
 		public void StateUpdate(){
-			if( initialize < Time.time ){
-				initialize = 0f;
-				if (Application.loadedLevelName != "Menü") {
-					Application.LoadLevel("Menü");
-				}
+			if (Application.loadedLevelName == "Menü" && !scriptsLoaded) {
+				scriptsLoaded = true;
+				//-Change Settings Menü-
+				//Panels
+				GameObject SettingsPC, SettingsMob;
+				SettingsPC = GameObject.Find("SettingsPanelPC");
+				SettingsMob = GameObject.Find("SettingsPanelMob");
+				#if UNITY_ANDROID || UNITY_IPHONE
+								NGUITools.SetActive(SettingsPC,false);
+								GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsMob.transform;
+				#else
+								NGUITools.SetActive(SettingsMob,false);
+								GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsPC.transform;
+				#endif
 			}
 		}
 
@@ -34,12 +42,16 @@ namespace Assets.Code.States{
 		public void getClick(string ObjectName){
 			if (ObjectName == "SinglePlayer") {
 				manager.SwitchState (new SinglePlayerState (manager));
+				Slideeffect.getSlided = false;
+				TweenSlider.ShowMenue = null;
 			}
 			/*if (ObjectName == "MultiPlayer") {
 				manager.SwitchState (new MultiplayerState (manager));
 			}*/
 			if (ObjectName == "LocalCoop") {
 				manager.SwitchState (new LocalCoopState (manager));
+				Slideeffect.getSlided = false;
+				TweenSlider.ShowMenue = null;
 			}
 			if (ObjectName == "Exit") {
 				Application.Quit();

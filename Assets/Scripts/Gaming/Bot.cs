@@ -28,6 +28,7 @@ public class Bot : MonoBehaviour {
 	private int letItSpin;
 	// Use this for initialization
 	void Start () {
+		ScaleToFormat.getAspectRatio();
 		TopWall = GameObject.Find ("topWall");
 		ButtomWall = GameObject.Find ("buttomWall");
 		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
@@ -74,7 +75,7 @@ public class Bot : MonoBehaviour {
 		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 9 );
 		Debug.DrawLine(Position,BallDestinationPos);
 		if( hit ){
-			if( BallDestinationPos!=hit.point && tempBallDestination == Vector2.zero){
+			if( tempBallDestination == Vector2.zero || BallDestinationPos != new Vector2( transform.position.x,transform.position.y)){
 				BallDestinationPos = hit.point;
 				letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
@@ -82,7 +83,6 @@ public class Bot : MonoBehaviour {
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
 						float ScalingX = Mathf.Clamp (Ball.rigidbody2D.velocity.x,1,-1);
 						ReflectScale = new Vector2((Ball.GetComponent<CircleCollider2D>().radius)*Ball.transform.localScale.x*ScalingX,(Ball.GetComponent<CircleCollider2D>().radius)*Ball.transform.localScale.y*ScalingY);
-						//ReflectScale = new Vector2((Ball.transform.localScale.x/2)*ScalingX , (Ball.transform.localScale.y/2)*ScalingY );
 						SaveColideName = hit.collider.name;
 						savePos = hit.point+ReflectScale;
 						saveDir = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);

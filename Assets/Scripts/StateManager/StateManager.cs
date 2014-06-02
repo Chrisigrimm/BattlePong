@@ -39,7 +39,7 @@ public class StateManager : MonoBehaviour {
 	}
 
 	public void Restart (){
-		Application.LoadLevel(Application.loadedLevelName);
+		activeState = new SinglePlayerState (this);
 	}
 
 	public void SwitchState( IStateBase newState){

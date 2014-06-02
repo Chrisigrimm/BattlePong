@@ -17,6 +17,7 @@ public class PlayerControls : MonoBehaviour {
 	private string HitWall;
 	// Use this for initialization
 	void Start () {
+		ScaleToFormat.getAspectRatio();
 		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		TopWall = GameObject.Find ("topWall");
 		ButtomWall = GameObject.Find ("buttomWall");
@@ -36,11 +37,11 @@ public class PlayerControls : MonoBehaviour {
 		}else{
 			HitWall = "";
 		}
-		if (Application.platform == RuntimePlatform.Android) {
+		#if UNITY_ANDROID || UNITY_IPHONE
 			androidControl ();
-		} else {
+		#else
 			computerControl ();
-		}
+		#endif
 	}
 
 	void computerControl(){
@@ -97,5 +98,10 @@ public class PlayerControls : MonoBehaviour {
 				rigidbody2D.velocity = new Vector2(0,0);
 			}
 		}
+	}
+
+	void ResetPlayer(){
+		transform.position = new Vector3 (transform.position.x, 0, transform.position.z);
+		rigidbody2D.velocity = new Vector2 (0, 0);
 	}
 }

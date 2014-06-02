@@ -65,9 +65,12 @@ namespace Assets.Code.States{
 
 		public void getClick(string ObjectName){
 			if (ObjectName == "Restart") {
-				UnPauseGame();
 				GameManager.ResetScore();
-				manager.Restart();
+				GameObject.Find("Ball").SendMessage ("ResetBall");
+				//Player
+				GameObject.Find("Player01").SendMessage ("ResetPlayer");
+				GameObject.Find("Player02").SendMessage ("ResetPlayer");
+				UnPauseGame();
 			}
 			if( ObjectName == "Menü"){
 				UnPauseGame();

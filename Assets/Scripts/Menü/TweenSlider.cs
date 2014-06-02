@@ -62,16 +62,28 @@ public class TweenSlider : MonoBehaviour {
 			Slideeffect.getSlided = false;
 			Stage = 1;
 		}
+		if (ShowMenue != null && Stage == 2 && ShowMenue != name ){
+			MenueTween.PlayBackwards(); 
+			ClickTween.PlayBackwards();
+			StartCoroutine(ShowSettings());
+			GetComponent<AudioSource>().Play();
+			Icon.GetComponent<UISprite>().spriteName = OldIcon;
+			Icon.transform.localScale = OldScale;
+			OldScale = Vector3.zero;
+			OldIcon = null;
+			Slideeffect.getSlided = false;
+			Stage = 0;
+		}
 	}
 
 	void OnPress(bool isDown){
 		//On Android
 		if (Application.platform == RuntimePlatform.Android){
 			if(!Slideeffect.getSlided){
-					if( isDown ){
-						HoverTween.PlayForward();
-					}else{
-						HoverTween.PlayBackwards();
+				if( isDown ){
+					HoverTween.PlayForward();
+				}else{
+					HoverTween.PlayBackwards();
 			}
 		}else{
 				if( Slideeffect.getSlided && Stage == 2 && ShowMenue == name && isDown){
@@ -147,5 +159,10 @@ public class TweenSlider : MonoBehaviour {
 				HoverTween.PlayBackwards ();
 			}
 		}
+	}
+
+	IEnumerator ShowSettings(){
+		yield return new WaitForSeconds(0.5f);
+		BackTween.PlayBackwards();
 	}
 }

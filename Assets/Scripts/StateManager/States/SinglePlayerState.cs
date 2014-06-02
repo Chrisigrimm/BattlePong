@@ -9,7 +9,7 @@ namespace Assets.Code.States{
 		bool toggleESC;
 		float savedTimeScale;
 		float initialize;
-		bool loadScripts = false;
+		bool scriptsLoaded = false;
 
 		public SinglePlayerState(StateManager managerRef) // Constructor
 		{
@@ -20,20 +20,18 @@ namespace Assets.Code.States{
 		}
 
 		public void StateUpdate(){
-			if( initialize < Time.time ){
+			if( initialize < Time.time && initialize != 0f ){
 				initialize = 0f;
-				if (Application.loadedLevelName != "Game") {
-					Application.LoadLevel("Game");
-				}
+				Application.LoadLevel("Game");
 			}
 
-			if (Application.loadedLevelName == "Game" && !loadScripts) {
-				loadScripts = true;
+			if (Application.loadedLevelName == "Game" && !scriptsLoaded && initialize == 0f) {
+				scriptsLoaded = true;
 				GameObject Player01, Player02;
 				//Bot
 				Player01 = GameObject.Find("Player01");
 				Bot BotScript = Player01.AddComponent<Bot>();
-				BotScript.Difficult = 3;
+				BotScript.Difficult = 3f;
 				BotScript.ReaktionTime = 0.122f;
 				BotScript.speed = 20f;
 				//Player
@@ -61,9 +59,13 @@ namespace Assets.Code.States{
 
 		public void getClick(string ObjectName){
 			if (ObjectName == "Restart") {
-				UnPauseGame();
 				GameManager.ResetScore();
-				manager.Restart();
+				GameObject.Find("Ball").SendMessage ("ResetBall");
+				//Bot
+				GameObject.Find("Player01").SendMessage ("ResetPath");
+				//Player
+				GameObject.Find("Player02").SendMessage ("ResetPlayer");
+				UnPauseGame();
 			}
 			if( ObjectName == "Menü"){
 				UnPauseGame();
