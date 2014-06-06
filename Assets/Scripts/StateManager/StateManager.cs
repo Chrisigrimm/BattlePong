@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using Assets.Code.States;
 using Assets.Code.Interfaces;
+using System.Collections;
 
 public class StateManager : MonoBehaviour {
 
 	private IStateBase activeState;
 	private static StateManager instanceRef;
-	// In the handler of this event you should start the multiplayer tournament: load the scene and start the game.
+	//GameModes
+	public static bool SinglePlayer, LocalCoop;
+	//Settings
+	public static GameObject UsernameOutput, UsernameInput;
+	public static string Player1Up, Player1Down;
+	public static string Player2Up, Player2Down;
+	public static bool MouseControl;
 
 	void Awake (){
 		if (instanceRef == null) {
 			instanceRef = this;
 			DontDestroyOnLoad(gameObject);
 		} else{
-			DestroyImmediate(gameObject);
+			Destroy(gameObject);
 		}
 	}
 
@@ -38,15 +45,17 @@ public class StateManager : MonoBehaviour {
 		}
 	}
 
-	public void Restart (){
-		activeState = new SinglePlayerState (this);
-	}
-
 	public void SwitchState( IStateBase newState){
 		activeState = newState;
 	}
-	
-	public void getClick(string ObjectName){
-		activeState.getClick(ObjectName);
+
+	//NGUI Feedback of Inputs
+	void OnClick(GameObject GmObj){
+		activeState.NGUIfeedback (GmObj, "OnClick");
 	}
+
+	void OnSubmit(GameObject GmObj){
+		activeState.NGUIfeedback (GmObj, "OnSubmit");
+	}
+
 }

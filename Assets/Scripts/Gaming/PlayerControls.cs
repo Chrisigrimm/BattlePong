@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using Assets.Code.States;
 
    //////////////
   ////G-Tec/////
@@ -9,7 +9,7 @@ using System.Collections;
 public class PlayerControls : MonoBehaviour {
 	public KeyCode moveUp, moveDown;
 	public float speed = 10.0f;
-	private float TouchPosY;
+	private float TouchPosY, MousePosY;
 	private float UpDown;
 	private GameObject Ball;
 	private BoxCollider2D PlayerCollider;
@@ -45,17 +45,29 @@ public class PlayerControls : MonoBehaviour {
 	}
 
 	void computerControl(){
-		Vector2 v = rigidbody2D.velocity;
-		Vector3 pos = rigidbody2D.transform.position;
-		if (Input.GetKey (moveUp) && HitWall!="TopWall") {
-			v.y = speed;
-			rigidbody2D.velocity = v;
-		}	else if (Input.GetKey (moveDown) && HitWall!="ButtomWall") {
-			v.y = speed * -1.0f;
-			rigidbody2D.velocity = v;
-		}	else {
-			v.y = speed * 0.0f;
-			rigidbody2D.velocity = v;
+
+		if (StateManager.MouseControl) {
+			MousePosY = Camera.main.ScreenToWorldPoint(new Vector3(0,Input.mousePosition.y,0)).y;
+			UpDown = Mathf.Clamp(MousePosY-transform.position.y,-1,1);
+			if (HitWall=="TopWall" && UpDown!=-1) {
+				UpDown=0;
+			} else if (HitWall=="ButtomWall" && UpDown!=1){
+				UpDown=0;
+			}
+			rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,MousePosY)));
+		}else{
+			Vector2 v = rigidbody2D.velocity;
+			Vector3 pos = rigidbody2D.transform.position;
+			if (Input.GetKey (moveUp) && HitWall!="TopWall") {
+				v.y = speed;
+				rigidbody2D.velocity = v;
+			}	else if (Input.GetKey (moveDown) && HitWall!="ButtomWall") {
+				v.y = speed * -1.0f;
+				rigidbody2D.velocity = v;
+			}	else {
+				v.y = speed * 0.0f;
+				rigidbody2D.velocity = v;
+			}
 		}
 	}
 

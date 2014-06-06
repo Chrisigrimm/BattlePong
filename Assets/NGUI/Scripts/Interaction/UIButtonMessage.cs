@@ -23,6 +23,7 @@ public class UIButtonMessage : MonoBehaviour
 	}
 
 	public GameObject target;
+	public string findTarget;
 	public string functionName;
 	public Trigger trigger = Trigger.OnClick;
 	public bool includeChildren = false;
@@ -60,7 +61,8 @@ public class UIButtonMessage : MonoBehaviour
 	void Send ()
 	{
 		if (string.IsNullOrEmpty(functionName)) return;
-		if (target == null) target = gameObject;
+		if (target == null && findTarget == null) target = gameObject;
+		else if (target == null) target = GameObject.Find(findTarget);
 
 		if (includeChildren)
 		{

@@ -69,11 +69,10 @@ public class UICheckbox : MonoBehaviour
 	/// </summary>
 
 	public OnStateChange onStateChange;
-
 	// Prior to 1.90 'option' was used to toggle the radio button group functionality
 	[HideInInspector][SerializeField] bool option = false;
 
-	bool mChecked = true;
+	[HideInInspector]public bool mChecked = true;
 	bool mStarted = false;
 	Transform mTrans;
 

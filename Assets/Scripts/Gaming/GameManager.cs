@@ -5,13 +5,10 @@ public class GameManager : MonoBehaviour {
 	static int Score01;
 	static int Score02;
 	public GUISkin theSkin;
-	public static GameObject pausedPanel;
 
 	void Start(){
 		ResetScore ();
 		if (Application.loadedLevelName == "Game" ){
-			pausedPanel = GameObject.Find("Window - Paused");
-			NGUITools.SetActive(pausedPanel,false);
 		}
 	}
 

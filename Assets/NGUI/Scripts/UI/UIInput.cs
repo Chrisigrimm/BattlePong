@@ -100,6 +100,7 @@ public class UIInput : MonoBehaviour
 	/// <summary>
 	/// Event receiver that will be notified when the input field submits its data (enter gets pressed).
 	/// </summary>
+	public string findEventReceiver;
 
 	public GameObject eventReceiver;
 
@@ -335,8 +336,9 @@ public class UIInput : MonoBehaviour
 				mKeyboard = null;
 				current = this;
 				if (onSubmit != null) onSubmit(mText);
-				if (eventReceiver == null) eventReceiver = gameObject;
-				eventReceiver.SendMessage(functionName, mText, SendMessageOptions.DontRequireReceiver);
+				if (eventReceiver == null && findEventReceiver == null) eventReceiver = gameObject;
+				else if (eventReceiver == null) eventReceiver = GameObject.Find(findEventReceiver);
+				eventReceiver.SendMessage(functionName, gameObject, SendMessageOptions.DontRequireReceiver);
 				current = null;
 				selected = false;
 			}
@@ -405,7 +407,7 @@ public class UIInput : MonoBehaviour
 				if (mText.Length > 0)
 				{
 					mText = mText.Substring(0, mText.Length - 1);
-					SendMessage("OnInputChanged", this, SendMessageOptions.DontRequireReceiver);
+					SendMessage("OnInputChanged", mText, SendMessageOptions.DontRequireReceiver);
 				}
 			}
 			else if (c == '\r' || c == '\n')
@@ -418,8 +420,9 @@ public class UIInput : MonoBehaviour
 						// Enter
 						current = this;
 						if (onSubmit != null) onSubmit(mText);
-						if (eventReceiver == null) eventReceiver = gameObject;
-						eventReceiver.SendMessage(functionName, mText, SendMessageOptions.DontRequireReceiver);
+						if (eventReceiver == null && findEventReceiver == null) eventReceiver = gameObject;
+						else if (eventReceiver == null) eventReceiver = GameObject.Find(findEventReceiver);
+						eventReceiver.SendMessage(functionName, gameObject, SendMessageOptions.DontRequireReceiver);
 						current = null;
 						selected = false;
 						return;
