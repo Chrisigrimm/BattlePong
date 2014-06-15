@@ -2,6 +2,7 @@
 using Assets.Code.States;
 using Assets.Code.Interfaces;
 using System.Collections;
+using Serialization;
 
 public class StateManager : MonoBehaviour {
 
@@ -10,10 +11,12 @@ public class StateManager : MonoBehaviour {
 	//GameModes
 	public static bool SinglePlayer, LocalCoop;
 	//Settings
-	public static GameObject UsernameOutput, UsernameInput;
+	public static string Username;
 	public static string Player1Up, Player1Down;
 	public static string Player2Up, Player2Down;
 	public static bool MouseControl;
+	//Difficult
+	public static string difficult;
 
 	void Awake (){
 		if (instanceRef == null) {
@@ -57,5 +60,4 @@ public class StateManager : MonoBehaviour {
 	void OnSubmit(GameObject GmObj){
 		activeState.NGUIfeedback (GmObj, "OnSubmit");
 	}
-
 }

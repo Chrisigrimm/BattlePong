@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Assets.Code.States;
    //////////////
   ////G-Tec/////
  ////Keyjin////
@@ -24,15 +24,7 @@ public class GoalManager : MonoBehaviour {
 
 	void Goal(){
 		string wallName = transform.name;
-		GameManager.Score (wallName);
+		GameState.Score (wallName);
 		Ball.SendMessage("ResetBall");
 	}
-
-	/*void OnTriggerEnter2D( Collider2D hitInfo ){
-		if (hitInfo.name == "Ball") {
-			string wallName = transform.name;
-			GameManager.Score (wallName);
-			hitInfo.gameObject.SendMessage ("ResetBall");
-		}
-	}*/
 }

@@ -68,8 +68,6 @@ public class TweenSlider : MonoBehaviour {
 			StartCoroutine(ShowSettings());
 			GetComponent<AudioSource>().Play();
 			Icon.GetComponent<UISprite>().spriteName = OldIcon;
-			Icon.transform.localScale = OldScale;
-			OldScale = Vector3.zero;
 			OldIcon = null;
 			Slideeffect.getSlided = false;
 			Stage = 0;
@@ -91,8 +89,6 @@ public class TweenSlider : MonoBehaviour {
 					MenueTween.PlayBackwards();
 					GetComponent<AudioSource>().Play();
 					Icon.GetComponent<UISprite>().spriteName = OldIcon;
-					Icon.transform.localScale = OldScale;
-					OldScale = Vector3.zero;
 					OldIcon = null;
 					ShowMenue = null;
 					Slideeffect.getSlided = false;
@@ -104,9 +100,7 @@ public class TweenSlider : MonoBehaviour {
 					MenueTween.PlayForward();
 					GetComponent<AudioSource>().Play();
 					OldIcon = Icon.GetComponent<UISprite>().spriteName;
-					OldScale = Icon.transform.localScale;
 					Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
-					Icon.transform.localScale = new Vector3(90,115,1);
 					HoverTween.GoTo(0f);
 					Stage = 2;
 				}
@@ -123,8 +117,6 @@ public class TweenSlider : MonoBehaviour {
 				MenueTween.PlayBackwards();
 				GetComponent<AudioSource>().Play();
 				Icon.GetComponent<UISprite>().spriteName = OldIcon;
-				Icon.transform.localScale = OldScale;
-				OldScale = Vector3.zero;
 				OldIcon = null;
 				ShowMenue = null;
 				Slideeffect.getSlided = false;
@@ -136,9 +128,7 @@ public class TweenSlider : MonoBehaviour {
 				MenueTween.PlayForward();
 				GetComponent<AudioSource>().Play();
 				OldIcon = Icon.GetComponent<UISprite>().spriteName;
-				OldScale = Icon.transform.localScale;
 				Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
-				Icon.transform.localScale = new Vector3(90,115,1);
 				HoverTween.GoTo(0f);
 				Stage = 2;
 			}

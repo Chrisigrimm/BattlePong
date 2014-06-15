@@ -13,7 +13,6 @@ public class BattlePongScale : MonoBehaviour {
 			Camera Cam = GameObject.Find("Camera").GetComponent<Camera>();
 			Vector2 aspect = ScaleToFormat.getAspectRatio();
 			Screen.sleepTimeout = (int)SleepTimeout.NeverSleep;
-			
 			if(ScaleToFormat.isLandScape()){
 				Scaled = true;
 				break;

@@ -8,6 +8,7 @@ namespace Assets.Code.States{
 		private StateManager manager;
 		private bool scriptsLoaded = false;
 		private GameObject SettingsPC, SettingsMob;
+		private GameObject UsernameOutput, UsernameInput;
 
 		public MenüSate(StateManager managerRef) // Constructor
 		{
@@ -35,14 +36,16 @@ namespace Assets.Code.States{
 					GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsPC.transform;
 				#endif
 
-				StateManager.UsernameOutput = GameObject.Find("UsernameOutput");
-				StateManager.UsernameInput = GameObject.Find("UsernameInput");
-				
+				UsernameOutput = GameObject.Find("UsernameOutput");
+				UsernameInput = GameObject.Find("UsernameInput");
+
 				if( LevelSerializer.SavedGames["menue"].Count > 0 ){
 					LevelSerializer.LoadNow (LevelSerializer.SavedGames["menue"][0].Data, false, false);
+					UsernameOutput.GetComponent<UILabel>().text = StateManager.Username;
+					UsernameInput.GetComponent<UIInput>().value = StateManager.Username;
 				}else{
-					StateManager.UsernameOutput.GetComponent<UILabel>().text = "Defalt";
-					StateManager.UsernameInput.GetComponent<UIInput>().text = "Defalt";
+					UsernameOutput.GetComponent<UILabel>().text = "Defalt";
+					UsernameInput.GetComponent<UIInput>().text = "Defalt";
 				}
 			}
 
@@ -57,24 +60,16 @@ namespace Assets.Code.States{
 		public void NGUIfeedback(GameObject GmObj, string Type){
 			if (Type == "OnClick") {
 				if (GmObj.name == "SinglePlayer") {
-					#if !UNITY_ANDROID && !UNITY_IPHONE
-					SaveSettings();
-					#endif
 					StateManager.SinglePlayer = true;
+					StateManager.difficult = GameObject.Find("PopUp DC").GetComponent<UIPopupList>().value;
 					manager.SwitchState (new GameState (manager));
 					Slideeffect.getSlided = false;
 					TweenSlider.ShowMenue = null;
 				}
 				if (GmObj.name == "MultiPlayer") {
-					#if !UNITY_ANDROID && !UNITY_IPHONE
-					SaveSettings();
-					#endif
 					manager.SwitchState (new GameState (manager));
 				}
 				if (GmObj.name == "LocalCoop") {
-					#if !UNITY_ANDROID && !UNITY_IPHONE
-					SaveSettings();
-					#endif
 					StateManager.MouseControl = false;
 					StateManager.LocalCoop = true;
 					manager.SwitchState (new GameState (manager));
@@ -83,6 +78,13 @@ namespace Assets.Code.States{
 				}
 				//If pressed Down
 				if (GmObj.name == "Settings" && TweenSlider.ShowMenue != "Settings") {
+					StateManager.Username = UsernameOutput.GetComponent<UILabel>().text;
+					#if !UNITY_ANDROID && !UNITY_IPHONE
+					StateManager.Player1Up = GameObject.Find("InputUp1").GetComponent<UIInput>().label.text;
+					StateManager.Player2Up = GameObject.Find("InputUp2").GetComponent<UIInput>().label.text;
+					StateManager.Player1Down = GameObject.Find("InputDown1").GetComponent<UIInput>().label.text;
+					StateManager.Player2Down = GameObject.Find("InputDown2").GetComponent<UIInput>().label.text;
+					#endif
 					LevelSerializer.SaveGame("menue");
 				}
 				if (GmObj.name == "Exit") {
@@ -92,20 +94,11 @@ namespace Assets.Code.States{
 
 			if (Type == "OnSubmit") {
 				if (GmObj.name == "UsernameInput") {
-					StateManager.UsernameOutput.GetComponent<UILabel>().text = StateManager.UsernameInput.GetComponent<UIInput>().text;
+					UsernameOutput.GetComponent<UILabel>().text = UsernameInput.GetComponent<UIInput>().text;
+					StateManager.Username = UsernameOutput.GetComponent<UILabel>().text;
 					LevelSerializer.SaveGame("menue");
 				}
 			}
 		}
-		#if !UNITY_ANDROID && !UNITY_IPHONE
-		// For other States
-		void SaveSettings(){
-			StateManager.Player1Up = GameObject.Find("InputUp1").GetComponent<UIInput>().label.text;
-			StateManager.Player2Up = GameObject.Find("InputUp2").GetComponent<UIInput>().label.text;
-			StateManager.Player1Down = GameObject.Find("InputDown1").GetComponent<UIInput>().label.text;
-			StateManager.Player2Down = GameObject.Find("InputDown2").GetComponent<UIInput>().label.text;
-			StateManager.MouseControl = GameObject.Find("InputMouseControl").GetComponent<UICheckbox>().mChecked;
-		}
-		#endif
 	}
 }

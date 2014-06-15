@@ -3,8 +3,8 @@ using System.Collections;
 
 public class CountDown : MonoBehaviour {
 	public float Timer = 3;
-	float saveTimer = 3;
-	bool Visible = true;
+	private float saveTimer = 3;
+	private bool Visible = true;
 	public GUISkin theSkin;
 	// Update is called once per frame
 	void Start(){

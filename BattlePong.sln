@@ -9,6 +9,8 @@ Project("{33A37820-0CD4-2252-FAA1-238AD27BFFC7}") = "BattlePong", "Assembly-CSha
 EndProject
 Project("{33A37820-0CD4-2252-FAA1-238AD27BFFC7}") = "BattlePong", "Assembly-CSharp-Editor.csproj", "{FBEB3C61-F217-BAE5-A3A4-D98E4BE4DD69}"
 EndProject
+Project("{33A37820-0CD4-2252-FAA1-238AD27BFFC7}") = "BattlePong", "Assembly-UnityScript.unityproj", "{592D8AE8-9CA1-5CB5-9B5D-D96407AB83FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,11 +33,15 @@ Global
 		{FBEB3C61-F217-BAE5-A3A4-D98E4BE4DD69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBEB3C61-F217-BAE5-A3A4-D98E4BE4DD69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBEB3C61-F217-BAE5-A3A4-D98E4BE4DD69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{592D8AE8-9CA1-5CB5-9B5D-D96407AB83FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592D8AE8-9CA1-5CB5-9B5D-D96407AB83FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592D8AE8-9CA1-5CB5-9B5D-D96407AB83FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592D8AE8-9CA1-5CB5-9B5D-D96407AB83FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																													GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																																																	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

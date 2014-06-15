@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Code.States;
 
    //////////////
   ////G-Tec/////
@@ -10,7 +11,6 @@ public class Bot : MonoBehaviour {
 	public float speed = 20.0f;
 	//Normal Human ReaktionTime
 	public float ReaktionTime = 0.112f;
-	public float Difficult = 1;
 	private GameObject Ball;
 	private Vector2 BallDestinationPos;
 	private string SaveColideName ="";
@@ -25,7 +25,6 @@ public class Bot : MonoBehaviour {
 	private int RandPos;
 	private Vector2 tempBallDestination;
 	private GameObject TopWall, ButtomWall;
-	private int letItSpin;
 	// Use this for initialization
 	void Start () {
 		ScaleToFormat.getAspectRatio();
@@ -33,7 +32,7 @@ public class Bot : MonoBehaviour {
 		ButtomWall = GameObject.Find ("buttomWall");
 		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		Ball = GameObject.FindGameObjectWithTag("Ball");
-		SaveScore = GameManager.getScore();
+		SaveScore = GameState.getScore();
 	}
 	
 	// Update is called once per frame
@@ -77,7 +76,7 @@ public class Bot : MonoBehaviour {
 		if( hit ){
 			if( tempBallDestination == Vector2.zero || BallDestinationPos != new Vector2( transform.position.x,transform.position.y)){
 				BallDestinationPos = hit.point;
-				letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
+				//letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
 				if( hit.collider.name == "topWall" || hit.collider.name == "buttomWall" ){
 					if( SaveColideName == ""){
 						float ScalingY = Mathf.Clamp (Ball.rigidbody2D.velocity.y,1,-1);
@@ -97,9 +96,9 @@ public class Bot : MonoBehaviour {
 					Direction = saveDir;
 				}
 			}else{
-				if(letItSpin==3){
-					spinBall();
-				}
+				/*if(letItSpin==3){
+					//spinBall();
+				}*/
 			}
 		}else{
 			if( Ball.rigidbody2D.velocity.x!=0 && tempBallDestination==Vector2.zero){
@@ -137,8 +136,8 @@ public class Bot : MonoBehaviour {
 	}
 
 	void ResetAfterGoal(){
-		if(SaveScore != GameManager.getScore()){
-			SaveScore = GameManager.getScore();
+		if(SaveScore != GameState.getScore()){
+			SaveScore = GameState.getScore();
 			ResetPath();
 			BallDestinationPos = Vector2.zero;
 		}

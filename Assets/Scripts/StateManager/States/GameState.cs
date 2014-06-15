@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Code.Interfaces;
-
+using System.Collections;
 
 namespace Assets.Code.States{
 	public class GameState : IStateBase{
@@ -10,6 +10,8 @@ namespace Assets.Code.States{
 		private float savedTimeScale;
 		private bool scriptsLoaded = false;
 		private GameObject pausedPanel;
+		static int Score01, Score02;
+		private static GameObject GScore01, GScore02;
 
 		public GameState(StateManager managerRef) // Constructor
 		{
@@ -24,15 +26,26 @@ namespace Assets.Code.States{
 		public void StateUpdate(){
 			if (Application.loadedLevelName == "Game" && !scriptsLoaded && BattlePongScale.ScaleGame()) {
 				scriptsLoaded = true;
+				//Score
+				GScore01 = GameObject.Find("Score1");
+				GScore02 = GameObject.Find("Score2");
+				ResetScore ();
 				GameObject Player01, Player02;
 				//SinglePlayer
 				if( StateManager.SinglePlayer ){
 					//Bot
 					Player01 = GameObject.Find("Player01");
 					Bot BotScript = Player01.AddComponent<Bot>();
-					BotScript.Difficult = 3f;
-					BotScript.ReaktionTime = 0.122f;
-					BotScript.speed = 20f;
+					if( StateManager.difficult == "Easy" ){
+						BotScript.ReaktionTime = 1f;
+						BotScript.speed = 5F;
+					}else if( StateManager.difficult == "Normal" ){
+						BotScript.ReaktionTime = 1f;
+						BotScript.speed = 7f;
+					}else if ( StateManager.difficult == "Hard" ){
+						BotScript.ReaktionTime = 0.122f;
+						BotScript.speed = 25f;
+					}
 				}
 				//Single-,Local- Player
 				if( StateManager.SinglePlayer || StateManager.LocalCoop ){
@@ -79,22 +92,45 @@ namespace Assets.Code.States{
 		public void NGUIfeedback(GameObject GmObj, string Type){
 			if (Type == "OnClick"){
 				if (GmObj.name == "Restart") {
-						GameManager.ResetScore ();
-						GameObject.Find ("Ball").SendMessage ("ResetBall");
+					ResetScore ();
+					GameObject.Find ("Ball").SendMessage ("ResetBall");
+					if( StateManager.SinglePlayer ){
 						//Bot
 						GameObject.Find ("Player01").SendMessage ("ResetPath");
+					}
+					if( StateManager.LocalCoop || StateManager.SinglePlayer ){
 						//Player
 						GameObject.Find ("Player02").SendMessage ("ResetPlayer");
-						UnPauseGame ();
+						if( StateManager.LocalCoop ){
+							GameObject.Find ("Player01").SendMessage ("ResetPlayer");
+						}
+					}
+					UnPauseGame ();
 				}
 				if (GmObj.name == "Menü") {
-						UnPauseGame ();
-						Screen.orientation = ScreenOrientation.Portrait;
-						manager.SwitchState (new MenüSate (manager));
+					UnPauseGame ();
+					Screen.orientation = ScreenOrientation.Portrait;
+					manager.SwitchState (new MenüSate (manager));
 				}
 			}
 		}
 
+		// Set Score
+		public static void Score(string wallName){
+			if (wallName == "leftWall") {Score02 += 1;}
+			if (wallName == "rightWall") {Score01 += 1;}
+			GScore01.GetComponent<UILabel>().text = "" + Score01;
+			GScore02.GetComponent<UILabel>().text = "" + Score02;
+		}
+
+		public static void ResetScore(){
+			Score02 = 0;
+			Score01 = 0;
+		}
+
+		public static Vector2 getScore(){
+			return new Vector2(Score01,Score02);
+		}
 
 		void PausedGame() {
 			NGUITools.SetActive(pausedPanel,true);
