@@ -16,13 +16,13 @@ public class TweenSlider : MonoBehaviour {
 	private int Stage;
 	// Use this for initialization
 	void Start () {
-		ScaleToFormat.getAspectRatio();
+		/*ScaleToFormat.getAspectRatioSoft(GameObject.Find("Camera").GetComponent<Camera>());
 		if( !ScaleToFormat.isLandScape() ){
 			BackPos = ScaleToFormat.getPos (BackPos, new Vector2 (10, 16));
 			HoverPos = ScaleToFormat.getPos (HoverPos, new Vector2 (10, 16));
 			ClickedPos = ScaleToFormat.getPos (ClickedPos, new Vector2 (10, 16));
 			MenuePos = ScaleToFormat.getPos (MenuePos, new Vector2 (10, 16));
-		}
+		}*/
 
 		BackTween = HOTween.To(Slider, 0.5f, new TweenParms().AutoKill(false)
 		                        .Prop("position",BackPos, true) // Position tween (set as relative)

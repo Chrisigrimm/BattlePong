@@ -11,16 +11,18 @@ public class BattlePongScale : MonoBehaviour {
 		switch(Application.loadedLevelName){
 		case "Menue":
 			Camera Cam = GameObject.Find("Camera").GetComponent<Camera>();
-			Vector2 aspect = ScaleToFormat.getAspectRatio();
+			Vector2 aspect = ScaleToFormat.getAspectRatioSoft(Cam);
 			Screen.sleepTimeout = (int)SleepTimeout.NeverSleep;
 			if(ScaleToFormat.isLandScape()){
 				Scaled = true;
 				break;
 			}
 			ScaleToFormat.setNewOrthographicSize(Cam,100f,16f);
-			GmObjs = GameObject.FindGameObjectsWithTag("Anchor");
+			GmObjs = FindObjectsOfType (typeof(GameObject));
+			//GmObjs = GameObject.FindGameObjectsWithTag("Anchor");
 			foreach(GameObject GmObj in GmObjs){
-				ScaleToFormat.reScaleToFormat(new Vector2(10,16),GmObj);
+				UISprite Test = GmObj.GetComponent<UISprite>();
+				//ScaleToFormat.reScaleToFormat(new Vector2(10,16),GmObj);
 			}
 			Scaled = true;
 			break;

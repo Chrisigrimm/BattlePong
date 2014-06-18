@@ -20,7 +20,7 @@ namespace Assets.Code.States{
 					Application.LoadLevel ("Menue");
 		}
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "Menue" && !scriptsLoaded && BattlePongScale.ScaleGame()) {
+			if (Application.loadedLevelName == "Menue" && !scriptsLoaded) {
 				scriptsLoaded = true;
 				//Set Gaming-States False
 				StateManager.SinglePlayer = false;

@@ -17,7 +17,7 @@ public class ScaleToFormat {
 		return aspectRatio;
 	}
 
-	public static Vector2 setAspectRatio(Camera Cam){
+	public static Vector2 getAspectRatioSoft(Camera Cam){
 		if (Cam.aspect >= 1.7) {aspectRatio = new Vector2(16,9);}//16:9
 		else if (Cam.aspect >= 1.6){aspectRatio = new Vector2(16,10);}//16:10
 		else if (Cam.aspect >= 1.5){aspectRatio = new Vector2(3,2);}//3:2
@@ -25,6 +25,8 @@ public class ScaleToFormat {
 		else if (Cam.aspect >= 1.25){aspectRatio = new Vector2(5,4);}//5:4
 		else if (Cam.aspect >= 0.666){aspectRatio = new Vector2(2,3);}//2:3
 		else{aspectRatio = new Vector2(10,16);}//10:16
+
+		return aspectRatio;
 	}
 
 	public static bool isLandScape(){
