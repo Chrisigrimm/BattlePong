@@ -1,11 +1,11 @@
-Initialize engine version: 4.5.1f3 (73cd57f80e3e)
+Initialize engine version: 4.5.0f6 (fd4616464986)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 9.0c [aticfx32.dll 8.17.10.1247]
-    Renderer: AMD Radeon HD 7500G + 7500M/7600M Dual Graphics
-    Vendor:   ATI
-    VRAM:     1490 MB (via DXGI)
-    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=1 INTZ=1 RAWZ=0 NULL=1 RESZ=1 SlowINTZ=1
+    Version:  Direct3D 9.0c [nvd3dumx.dll 9.18.13.3788]
+    Renderer: NVIDIA GeForce GTX 470
+    Vendor:   NVIDIA
+    VRAM:     1226 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
 Begin MonoManager ReloadAssembly
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\UnityEngine.dll (this message is harmless)
 Loading C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\UnityEngine.dll into Unity Child Domain
@@ -19,123 +19,15 @@ Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed
 Loading C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\HOTween.dll into Unity Child Domain
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\Photon3Unity3D.dll (this message is harmless)
 Loading C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\Photon3Unity3D.dll into Unity Child Domain
-- Completed reload, in  0.126 seconds
-desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+- Completed reload, in  0.060 seconds
+desktop: 1920x1080 60Hz; virtual: 3200x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\System.dll (this message is harmless)
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
+UnloadTime: 6.094537 ms
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
-
-HandleD3DDeviceLost
-  HandleD3DDeviceLost: still lost
-Skipped frame because GfxDevice is in invalid state (device lost)
- 
-(Filename:  Line: 1617)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 623.
+Total: 1.589619 ms (FindLiveObjects: 0.154594 ms CreateObjectMapping: 0.033935 ms MarkObjects: 0.576586 ms  DeleteObjects: 0.006598 ms)
 

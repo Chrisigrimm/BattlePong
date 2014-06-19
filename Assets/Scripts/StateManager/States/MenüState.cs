@@ -16,11 +16,11 @@ namespace Assets.Code.States{
 
 			manager = managerRef;
 
-			if (Application.loadedLevelName != "Menue")
-					Application.LoadLevel ("Menue");
+			if (Application.loadedLevelName != "newMenue")
+					Application.LoadLevel ("newMenue");
 		}
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "Menue" && !scriptsLoaded) {
+			if (Application.loadedLevelName == "newMenue" && !scriptsLoaded) {
 				scriptsLoaded = true;
 				//Set Gaming-States False
 				StateManager.SinglePlayer = false;

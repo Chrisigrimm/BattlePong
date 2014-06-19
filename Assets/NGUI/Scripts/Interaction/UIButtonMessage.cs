@@ -72,7 +72,7 @@ public class UIButtonMessage : MonoBehaviour
 	{
 		if (string.IsNullOrEmpty(functionName)) return;
 		if (target == null && findTarget == null) target = gameObject;
-		else if (findTarget != null ) target = GameObject.Find(findTarget);
+		else if (findTarget != null) target = GameObject.Find(findTarget);
 
 		if (includeChildren)
 		{

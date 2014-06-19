@@ -13,11 +13,6 @@ public class TweenSettings : MonoBehaviour {
 	private Transform MenüOld;
 	// Use this for initialization
 	void Start () {
-		ScaleToFormat.getAspectRatio();
-		if( !ScaleToFormat.isLandScape() ){
-			MenüPos = ScaleToFormat.getPos (MenüPos, new Vector2 (10, 16));
-		}
-
 		SettingsTween = HOTween.To(Menü, 0.5f, new TweenParms().AutoKill(false)
 		                       .Prop("position",MenüPos, true) // Position tween (set as relative)
 		                       .Ease(EaseType.EaseInOutQuad) // Ease
