@@ -41,6 +41,7 @@ public class BallNetwork : Photon.MonoBehaviour {
 	// Update is called once per frame
 	void Update(){
 		if (!photonView.isMine){
+			//Teest
 			//transform.position = Vector3.Lerp(transform.position, this.correctBallPos, Time.deltaTime * 10);
 			//transform.position = this.correctBallPos;
 		}

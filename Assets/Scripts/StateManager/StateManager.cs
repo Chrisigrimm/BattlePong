@@ -11,6 +11,7 @@ public class StateManager : MonoBehaviour {
 	//GameModes
 	public static bool SinglePlayer, LocalCoop;
 	//Settings
+	[SerializeThis]
 	public static string Username;
 	public static string Player1Up, Player1Down;
 	public static string Player2Up, Player2Down;
@@ -53,11 +54,11 @@ public class StateManager : MonoBehaviour {
 	}
 
 	//NGUI Feedback of Inputs
-	void OnClick(GameObject GmObj){
+	public void OnClick(GameObject GmObj){
 		activeState.NGUIfeedback (GmObj, "OnClick");
 	}
 
-	void OnSubmit(GameObject GmObj){
+	public void OnSubmit(GameObject GmObj){
 		activeState.NGUIfeedback (GmObj, "OnSubmit");
 	}
 }

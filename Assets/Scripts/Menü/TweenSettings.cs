@@ -42,14 +42,16 @@ public class TweenSettings : MonoBehaviour {
 			SettingsTween.PlayForward ();
 			OldIcon = Icon.GetComponent<UISprite>().spriteName;
 			Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
-			transform.localRotation = new Quaternion(0,0,-1,1);
+			Icon.GetComponent<UIButton>().normalSprite = "ArrowBack";
+			transform.Rotate(0,0,90);
 			Menü.GetComponent<AudioSource>().Play();
 			State = 1;
 		}else if (State == 1){
 			TweenSlider.ShowMenue = null;
 			SettingsTween.PlayBackwards ();
 			Icon.GetComponent<UISprite>().spriteName = OldIcon;
-			transform.rotation = new Quaternion(0,0,0,0);
+			Icon.GetComponent<UIButton>().normalSprite = OldIcon;
+			transform.Rotate(0,0,-90);
 			Menü.GetComponent<AudioSource>().Play();
 			State = 0;
 		}

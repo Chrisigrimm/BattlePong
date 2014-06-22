@@ -16,18 +16,18 @@ namespace Assets.Code.States{
 
 			manager = managerRef;
 
-			if (Application.loadedLevelName != "newMenue")
-					Application.LoadLevel ("newMenue");
+			if (Application.loadedLevelName != "NewMenue")
+					Application.LoadLevel ("NewMenue");
 		}
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "newMenue" && !scriptsLoaded) {
+			if (Application.loadedLevelName == "NewMenue" && !scriptsLoaded) {
 				scriptsLoaded = true;
 				//Set Gaming-States False
 				StateManager.SinglePlayer = false;
 				StateManager.LocalCoop = false;
 				//-Change Settings Menü by device-
-				SettingsPC = GameObject.Find("SettingsPanelPC");
-				SettingsMob = GameObject.Find("SettingsPanelMob");
+				SettingsPC = GameObject.Find("Panel-Settings-PC");
+				SettingsMob = GameObject.Find("Panel-Settings-Mobile");
 				#if UNITY_ANDROID || UNITY_IPHONE
 					NGUITools.SetActive(SettingsPC,false);
 					GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsMob.transform;
@@ -35,17 +35,36 @@ namespace Assets.Code.States{
 					NGUITools.SetActive(SettingsMob,false);
 					GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsPC.transform;
 				#endif
-
-				UsernameOutput = GameObject.Find("UsernameOutput");
-				UsernameInput = GameObject.Find("UsernameInput");
+			
+				UsernameOutput = GameObject.Find("Output-Username");
+				UsernameInput = GameObject.Find("Input-Username");
 
 				if( LevelSerializer.SavedGames["menue"].Count > 0 ){
 					LevelSerializer.LoadNow (LevelSerializer.SavedGames["menue"][0].Data, false, false);
 					UsernameOutput.GetComponent<UILabel>().text = StateManager.Username;
 					UsernameInput.GetComponent<UIInput>().value = StateManager.Username;
+					#if !UNITY_ANDROID && !UNITY_IPHONE
+					GameObject.Find("Input-Up-1").GetComponent<UIInput>().label.text = StateManager.Player1Up;
+					GameObject.Find("Input-Up-2").GetComponent<UIInput>().label.text = StateManager.Player2Up;
+					GameObject.Find("Input-Down-1").GetComponent<UIInput>().label.text = StateManager.Player1Down;
+					GameObject.Find("Input-Down-2").GetComponent<UIInput>().label.text = StateManager.Player2Down;
+					GameObject.Find("Checkbox-Mousecontrol").GetComponent<UIToggle>().value = StateManager.MouseControl;
+					#endif
 				}else{
 					UsernameOutput.GetComponent<UILabel>().text = "Defalt";
 					UsernameInput.GetComponent<UIInput>().text = "Defalt";
+					#if !UNITY_ANDROID && !UNITY_IPHONE
+					GameObject.Find("Input-Up-1").GetComponent<UIInput>().label.text = "W";
+					GameObject.Find("Input-Up-2").GetComponent<UIInput>().label.text = "O";
+					GameObject.Find("Input-Down-1").GetComponent<UIInput>().label.text = "S";
+					GameObject.Find("Input-Down-2").GetComponent<UIInput>().label.text = "L";
+					GameObject.Find("Checkbox-Mousecontrol").GetComponent<UIToggle>().value = false;
+					StateManager.Player1Up = "W";
+					StateManager.Player2Up = "O";
+					StateManager.Player1Down = "S";
+					StateManager.Player2Down = "L";
+					StateManager.MouseControl = false;
+					#endif
 				}
 			}
 
@@ -61,7 +80,7 @@ namespace Assets.Code.States{
 			if (Type == "OnClick") {
 				if (GmObj.name == "SinglePlayer") {
 					StateManager.SinglePlayer = true;
-					StateManager.difficult = GameObject.Find("PopUp DC").GetComponent<UIPopupList>().value;
+					StateManager.difficult = GameObject.Find("PopUpList-Difficult").GetComponent<UIPopupList>().value;
 					manager.SwitchState (new GameState (manager));
 					Slideeffect.getSlided = false;
 					TweenSlider.ShowMenue = null;
@@ -78,12 +97,13 @@ namespace Assets.Code.States{
 				}
 				//If pressed Down
 				if (GmObj.name == "Settings" && TweenSlider.ShowMenue != "Settings") {
-					StateManager.Username = UsernameOutput.GetComponent<UILabel>().text;
+					StateManager.Username = UsernameInput.GetComponent<UIInput>().text;
 					#if !UNITY_ANDROID && !UNITY_IPHONE
-					StateManager.Player1Up = GameObject.Find("InputUp1").GetComponent<UIInput>().label.text;
-					StateManager.Player2Up = GameObject.Find("InputUp2").GetComponent<UIInput>().label.text;
-					StateManager.Player1Down = GameObject.Find("InputDown1").GetComponent<UIInput>().label.text;
-					StateManager.Player2Down = GameObject.Find("InputDown2").GetComponent<UIInput>().label.text;
+					StateManager.Player1Up = GameObject.Find("Input-Up-1").GetComponent<UIInput>().label.text;
+					StateManager.Player2Up = GameObject.Find("Input-Up-2").GetComponent<UIInput>().label.text;
+					StateManager.Player1Down = GameObject.Find("Input-Down-1").GetComponent<UIInput>().label.text;
+					StateManager.Player2Down = GameObject.Find("Input-Down-2").GetComponent<UIInput>().label.text;
+					StateManager.MouseControl = GameObject.Find("Checkbox-Mousecontrol").GetComponent<UIToggle>().value;
 					#endif
 					LevelSerializer.SaveGame("menue");
 				}
@@ -93,7 +113,7 @@ namespace Assets.Code.States{
 			}
 
 			if (Type == "OnSubmit") {
-				if (GmObj.name == "UsernameInput") {
+				if (GmObj.name == "Input-Username") {
 					UsernameOutput.GetComponent<UILabel>().text = UsernameInput.GetComponent<UIInput>().text;
 					StateManager.Username = UsernameOutput.GetComponent<UILabel>().text;
 					LevelSerializer.SaveGame("menue");
