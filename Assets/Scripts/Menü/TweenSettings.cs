@@ -43,7 +43,8 @@ public class TweenSettings : MonoBehaviour {
 			OldIcon = Icon.GetComponent<UISprite>().spriteName;
 			Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
 			Icon.GetComponent<UIButton>().normalSprite = "ArrowBack";
-			transform.Rotate(0,0,90);
+			Icon.transform.localScale = Icon.transform.localScale/1.2f;
+			transform.Rotate(0,0,-90);
 			Menü.GetComponent<AudioSource>().Play();
 			State = 1;
 		}else if (State == 1){
@@ -51,7 +52,8 @@ public class TweenSettings : MonoBehaviour {
 			SettingsTween.PlayBackwards ();
 			Icon.GetComponent<UISprite>().spriteName = OldIcon;
 			Icon.GetComponent<UIButton>().normalSprite = OldIcon;
-			transform.Rotate(0,0,-90);
+			Icon.transform.localScale = Icon.transform.localScale*1.2f;
+			transform.Rotate(0,0,90);
 			Menü.GetComponent<AudioSource>().Play();
 			State = 0;
 		}
