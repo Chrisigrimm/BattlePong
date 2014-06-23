@@ -10,48 +10,43 @@ public class TweenSlider : MonoBehaviour {
 	private Tweener HoverTween, ClickTween , BackTween, MenueTween;
 	public GameObject Icon;
 	private string OldIcon;
-	private Sequence SlideSeq;
-	public static string ShowMenue;
-	private int Stage;
+	public static string ShowMenue = null;
+	private int Stage = 0;
+	private bool scriptLoaded = false;
 	// Use this for initialization
-	void Start () {
-		/*ScaleToFormat.getAspectRatioSoft(GameObject.Find("Camera").GetComponent<Camera>());
-		if( !ScaleToFormat.isLandScape() ){
-			BackPos = ScaleToFormat.getPos (BackPos, new Vector2 (10, 16));
-			HoverPos = ScaleToFormat.getPos (HoverPos, new Vector2 (10, 16));
-			ClickedPos = ScaleToFormat.getPos (ClickedPos, new Vector2 (10, 16));
-			MenuePos = ScaleToFormat.getPos (MenuePos, new Vector2 (10, 16));
-		}*/
-
-		BackTween = HOTween.To(Slider, 0.5f, new TweenParms().AutoKill(false)
-		                        .Prop("position",BackPos, true) // Position tween (set as relative)
-		                        .Ease(EaseType.EaseInOutQuad) // Ease
-		                        );
-		BackTween.PlayForward ();
-		Stage = 1;
-
-		HoverTween = HOTween.To(Slider, 0.1f, new TweenParms().AutoKill(false)
-		                     .Prop("position",HoverPos, true) // Position tween (set as relative)
-		                     .Ease(EaseType.EaseInOutQuad) // Ease
-		                     );
-		HoverTween.Pause ();
-
-		ClickTween = HOTween.To(Slider, 0.5f, new TweenParms().AutoKill(false)
-		                        .Prop("position",ClickedPos, true) // Position tween (set as relative)
-		                        .Ease(EaseType.EaseInOutQuad) // Ease
-		                        );
-		ClickTween.Pause ();
-
-		MenueTween = HOTween.To(Menue, 0.8f, new TweenParms().AutoKill(false)
-		                        .Prop("position",MenuePos, true) // Position tween (set as relative)
-		                        .Ease(EaseType.EaseInOutQuad) // Ease
-		                        );
-		MenueTween.Pause ();
-
-	}
 	
 	// Update is called once per frame
 	void Update () {
+		if( Time.timeSinceLevelLoad> 0.5f && !scriptLoaded){
+			scriptLoaded = true;
+			ShowMenue = null;
+
+			BackTween = HOTween.To(Slider, 0.5f, new TweenParms().AutoKill(false)
+			                       .Prop("position",BackPos, true) // Position tween (set as relative)
+			                       .Ease(EaseType.EaseInOutQuad) // Ease
+			                       );
+			BackTween.PlayForward ();
+			Stage = 1;
+			
+			HoverTween = HOTween.To(Slider, 0.1f, new TweenParms().AutoKill(false)
+			                        .Prop("position",HoverPos, true) // Position tween (set as relative)
+			                        .Ease(EaseType.EaseInOutQuad) // Ease
+			                        );
+			HoverTween.Pause ();
+			
+			ClickTween = HOTween.To(Slider, 0.5f, new TweenParms().AutoKill(false)
+			                        .Prop("position",ClickedPos, true) // Position tween (set as relative)
+			                        .Ease(EaseType.EaseInOutQuad) // Ease
+			                        );
+			ClickTween.Pause ();
+			
+			MenueTween = HOTween.To(Menue, 0.8f, new TweenParms().AutoKill(false)
+			                        .Prop("position",MenuePos, true) // Position tween (set as relative)
+			                        .Ease(EaseType.EaseInOutQuad) // Ease
+			                        );
+			MenueTween.Pause ();
+		}
+
 		if (ShowMenue != null && ShowMenue != name && Stage == 1) {
 			BackTween.PlayBackwards();
 			Stage = 0;
@@ -84,28 +79,10 @@ public class TweenSlider : MonoBehaviour {
 			}
 		}else{
 				if( Slideeffect.getSlided && Stage == 2 && ShowMenue == name && isDown){
-					ClickTween.PlayBackwards();
-					MenueTween.PlayBackwards();
-					GetComponent<AudioSource>().Play();
-					Icon.GetComponent<UISprite>().spriteName = OldIcon;
-					Slider.GetComponent<UIButton>().normalSprite = OldIcon;
-					Icon.transform.localScale = Icon.transform.localScale*1.2f;
-					OldIcon = null;
-					ShowMenue = null;
-					Slideeffect.getSlided = false;
-					Stage = 1;
+					Backward();
 				}
 				if( Slideeffect.getSlided && ShowMenue == null && !isDown){
-					ShowMenue = name;
-					ClickTween.PlayForward();
-					MenueTween.PlayForward();
-					GetComponent<AudioSource>().Play();
-					OldIcon = Icon.GetComponent<UISprite>().spriteName;
-					Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
-					Slider.GetComponent<UIButton>().normalSprite = "ArrowBack";
-					Icon.transform.localScale = Icon.transform.localScale/1.2f;
-					HoverTween.GoTo(0f);
-					Stage = 2;
+					Forward();
 				}
 			}
 		}
@@ -116,28 +93,10 @@ public class TweenSlider : MonoBehaviour {
 		}else{
 			//ShowMenue
 			if(Slideeffect.getSlided && ShowMenue == name){
-				ClickTween.PlayBackwards();
-				MenueTween.PlayBackwards();
-				GetComponent<AudioSource>().Play();
-				Icon.GetComponent<UISprite>().spriteName = OldIcon;
-				Slider.GetComponent<UIButton>().normalSprite = OldIcon;
-				Icon.transform.localScale = Icon.transform.localScale*1.2f;
-				OldIcon = null;
-				ShowMenue = null;
-				Slideeffect.getSlided = false;
-				Stage = 1;
+				Backward();
 			}
 			if(Slideeffect.getSlided && ShowMenue == null){
-				ShowMenue = name;
-				ClickTween.PlayForward();
-				MenueTween.PlayForward();
-				GetComponent<AudioSource>().Play();
-				OldIcon = Icon.GetComponent<UISprite>().spriteName;
-				Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
-				Slider.GetComponent<UIButton>().normalSprite = "ArrowBack";
-				Icon.transform.localScale = Icon.transform.localScale/1.2f;
-				HoverTween.GoTo(0f);
-				Stage = 2;
+				Forward();
 			}
 		}
 	}
@@ -156,6 +115,31 @@ public class TweenSlider : MonoBehaviour {
 				HoverTween.PlayBackwards ();
 			}
 		}
+	}
+
+	void Forward(){
+		MenueTween.PlayForward();
+		ClickTween.PlayForward();
+		ShowMenue = name;
+		GetComponent<AudioSource>().Play();
+		OldIcon = Icon.GetComponent<UISprite>().spriteName;
+		Icon.GetComponent<UISprite>().spriteName = "ArrowBack";
+		Slider.GetComponent<UIButton>().normalSprite = "ArrowBack";
+		Icon.transform.localScale = Icon.transform.localScale/1.2f;
+		HoverTween.GoTo(0f);
+		Stage = 2;
+	}
+	void Backward(){
+		ClickTween.PlayBackwards();
+		MenueTween.PlayBackwards();
+		GetComponent<AudioSource>().Play();
+		Icon.GetComponent<UISprite>().spriteName = OldIcon;
+		Slider.GetComponent<UIButton>().normalSprite = OldIcon;
+		Icon.transform.localScale = Icon.transform.localScale*1.2f;
+		OldIcon = null;
+		ShowMenue = null;
+		Slideeffect.getSlided = false;
+		Stage = 1;
 	}
 
 	IEnumerator ShowSettings(){

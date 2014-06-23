@@ -9,15 +9,20 @@ namespace Assets.Code.States{
 		private bool scriptsLoaded = false;
 		private GameObject SettingsPC, SettingsMob;
 		private GameObject UsernameOutput, UsernameInput;
+		#if UNITY_ANDROID || UNITY_IPHONE
+		private ScreenOrientation saveOri;
+		#endif
 
 		public MenüSate(StateManager managerRef) // Constructor
 		{
-			Screen.orientation = ScreenOrientation.Portrait;
+			#if UNITY_ANDROID || UNITY_IPHONE
+			Screen.orientation = ScreenOrientation.AutoRotation;
+			saveOri = Screen.orientation;
+			#endif
 
 			manager = managerRef;
 
-			if (Application.loadedLevelName != "Menue")
-				Application.LoadLevel ("Menue");
+			Application.LoadLevel ("Menue");
 		}
 		public void StateUpdate(){
 			if (Application.loadedLevelName == "Menue" && !scriptsLoaded) {
@@ -67,7 +72,11 @@ namespace Assets.Code.States{
 					#endif
 				}
 			}
-
+			#if UNITY_ANDROID || UNITY_IPHONE
+			if (saveOri != Screen.orientation) {
+				manager.SwitchState(new MenüSate(manager));
+			}
+			#endif
 		}
 
 		public void StateLateUpdate(){

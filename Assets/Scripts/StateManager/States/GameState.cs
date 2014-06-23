@@ -24,8 +24,33 @@ namespace Assets.Code.States{
 		}
 
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "Game" && !scriptsLoaded && BattlePongScale.ScaleGame()) {
+			if (Application.loadedLevelName == "Game" && !scriptsLoaded && Time.timeSinceLevelLoad>1f) {
 				scriptsLoaded = true;
+				//Scale
+				float targetaspect = 16.0f / 9.0f;
+				float windowaspect = (float)Screen.width / (float)Screen.height;
+				float scaleheight = windowaspect / targetaspect;
+				if (scaleheight < 1.0f) {  
+					Rect rect = Camera.main.rect;
+					
+					rect.width = 1.0f;
+					rect.height = scaleheight;
+					rect.x = 0;
+					rect.y = (1.0f - scaleheight) / 2.0f;
+					
+					Camera.main.rect = rect;
+				} else { // add pillarbox
+					float scalewidth = 1.0f / scaleheight;
+					
+					Rect rect = Camera.main.rect;
+					
+					rect.width = scalewidth;
+					rect.height = 1.0f;
+					rect.x = (1.0f - scalewidth) / 2.0f;
+					rect.y = 0;
+					
+					Camera.main.rect = rect;
+				}
 				//Score
 				GScore01 = GameObject.Find("Score1");
 				GScore02 = GameObject.Find("Score2");
@@ -73,6 +98,7 @@ namespace Assets.Code.States{
 				pausedPanel = GameObject.Find("Window - Paused");
 				NGUITools.SetActive(pausedPanel,false);
 			}
+
 			if (Input.GetKeyDown ("escape")){
 				toggleESC=!toggleESC;
 				if( toggleESC == true ){

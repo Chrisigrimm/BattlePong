@@ -25,9 +25,33 @@ desktop: 1920x1080 60Hz; virtual: 3200x1080 at 0,0
 <RI> Input initialized.
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\System.dll (this message is harmless)
-UnloadTime: 6.094537 ms
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+Platform assembly: C:\Users\Keyjin\Documents\GitHub\BattlePong\test_Data\Managed\Mono.Security.dll (this message is harmless)
+UnloadTime: 3.596828 ms
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
 
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 623.
-Total: 1.589619 ms (FindLiveObjects: 0.154594 ms CreateObjectMapping: 0.033935 ms MarkObjects: 0.576586 ms  DeleteObjects: 0.006598 ms)
+Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 814.
+Total: 1.740441 ms (FindLiveObjects: 0.049331 ms CreateObjectMapping: 0.021366 ms MarkObjects: 1.214444 ms  DeleteObjects: 0.040219 ms)
+
+UnloadTime: 0.571558 ms
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 36 unused Assets to reduce memory usage. Loaded Objects now: 765.
+Total: 2.259840 ms (FindLiveObjects: 0.037705 ms CreateObjectMapping: 0.021995 ms MarkObjects: 1.469273 ms  DeleteObjects: 0.336210 ms)
+
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 944.
+Total: 2.652609 ms (FindLiveObjects: 0.214295 ms CreateObjectMapping: 0.025765 ms MarkObjects: 2.052143 ms  DeleteObjects: 0.005655 ms)
+
+UnloadTime: 1.015545 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 821.
+Total: 1.840676 ms (FindLiveObjects: 0.038648 ms CreateObjectMapping: 0.024508 ms MarkObjects: 1.382549 ms  DeleteObjects: 0.037077 ms)
+
+UnloadTime: 0.567787 ms
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0 / Dirty serialized files: 0)
+
+Unloading 36 unused Assets to reduce memory usage. Loaded Objects now: 769.
+Total: 2.413177 ms (FindLiveObjects: 0.031735 ms CreateObjectMapping: 0.021052 ms MarkObjects: 1.656231 ms  DeleteObjects: 0.334954 ms)
 
