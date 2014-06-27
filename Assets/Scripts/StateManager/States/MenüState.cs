@@ -25,7 +25,7 @@ namespace Assets.Code.States{
 			Application.LoadLevel ("Menue");
 		}
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "Menue" && !scriptsLoaded) {
+			if (Application.loadedLevelName == "Menue" && !scriptsLoaded && Time.timeSinceLevelLoad>0.1f) {
 				scriptsLoaded = true;
 				//Set Gaming-States False
 				StateManager.SinglePlayer = false;
@@ -34,13 +34,12 @@ namespace Assets.Code.States{
 				SettingsPC = GameObject.Find("Panel-Settings-PC");
 				SettingsMob = GameObject.Find("Panel-Settings-Mobile");
 				#if UNITY_ANDROID || UNITY_IPHONE
-					NGUITools.SetActive(SettingsPC,false);
+				SettingsPC.SetActive(false);
 					GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsMob.transform;
 				#else
 					NGUITools.SetActive(SettingsMob,false);
 					GameObject.Find("Settings").GetComponent<TweenSettings>().Menü = SettingsPC.transform;
 				#endif
-			
 				UsernameOutput = GameObject.Find("Output-Username");
 				UsernameInput = GameObject.Find("Input-Username");
 

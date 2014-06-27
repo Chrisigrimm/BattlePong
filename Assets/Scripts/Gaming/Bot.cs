@@ -27,10 +27,10 @@ public class Bot : MonoBehaviour {
 	private GameObject TopWall, ButtomWall;
 	// Use this for initialization
 	void Start () {
-		ScaleToFormat.getAspectRatio();
-		TopWall = GameObject.Find ("topWall");
-		ButtomWall = GameObject.Find ("buttomWall");
-		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
+		//ScaleToFormat.getAspectRatio();
+		TopWall = GameObject.Find ("TopWall");
+		ButtomWall = GameObject.Find ("ButtomWall");
+		//speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		Ball = GameObject.FindGameObjectWithTag("Ball");
 		SaveScore = GameState.getScore();
 	}

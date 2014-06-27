@@ -15,7 +15,7 @@ public class TweenSettings : MonoBehaviour {
 	}
 
 	void OnClick(){
-		if( Time.timeSinceLevelLoad> 0.5f ){
+		if( Time.timeSinceLevelLoad> 0.1f ){
 			if( State == 0 ){
 				SettingsTween = HOTween.To(Menü, 0.5f, new TweenParms().AutoKill(false)
 				                           .Prop("position",MenüPos, true) // Position tween (set as relative)

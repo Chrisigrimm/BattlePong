@@ -13,18 +13,19 @@ namespace Assets.Code.States{
 		static int Score01, Score02;
 		private static GameObject GScore01, GScore02;
 
-		public GameState(StateManager managerRef) // Constructor
-		{
+		public GameState(StateManager managerRef){	
+			#if UNITY_ANDROID || UNITY_IPHONE
 			Screen.orientation = ScreenOrientation.LandscapeLeft;
+			#endif
 
 			manager = managerRef;
 
-			if (Application.loadedLevelName != "Game")
-					Application.LoadLevel ("Game");
+			if (Application.loadedLevelName != "NewGame")
+				Application.LoadLevel ("NewGame");
 		}
 
 		public void StateUpdate(){
-			if (Application.loadedLevelName == "Game" && !scriptsLoaded && Time.timeSinceLevelLoad>1f) {
+			if (Application.loadedLevelName == "NewGame" && !scriptsLoaded && Time.timeSinceLevelLoad>0.1f) {
 				scriptsLoaded = true;
 				//Scale
 				float targetaspect = 16.0f / 9.0f;

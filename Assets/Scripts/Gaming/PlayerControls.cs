@@ -13,14 +13,14 @@ public class PlayerControls : MonoBehaviour {
 	private float UpDown;
 	private GameObject Ball;
 	private BoxCollider2D PlayerCollider;
-	private GameObject TopWall, ButtomWall;
+	private GameObject TopWall, BottomWall;
 	private string HitWall;
 	// Use this for initialization
 	void Start () {
-		ScaleToFormat.getAspectRatio();
-		speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
-		TopWall = GameObject.Find ("topWall");
-		ButtomWall = GameObject.Find ("buttomWall");
+		//ScaleToFormat.getAspectRatio();
+		//speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
+		TopWall = GameObject.Find ("TopWall");
+		BottomWall = GameObject.Find ("BottomWall");
 		Ball = GameObject.FindGameObjectWithTag("Ball");
 		PlayerCollider = GetComponent<BoxCollider2D>();
 	}
@@ -30,10 +30,10 @@ public class PlayerControls : MonoBehaviour {
 				(transform.position.y + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y)) {
 			transform.position = new Vector2(transform.position.x,(TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
 				HitWall = "TopWall";
-		}else if((ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) >
+		}else if((BottomWall.transform.position.y + (BottomWall.GetComponent<BoxCollider2D> ().size.y)*BottomWall.transform.localScale.y) >
 		         (transform.position.y - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y)) {
-			transform.position = new Vector2(transform.position.x,(ButtomWall.transform.position.y + (ButtomWall.GetComponent<BoxCollider2D> ().size.y)*ButtomWall.transform.localScale.y) + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
-			HitWall = "ButtomWall";
+			transform.position = new Vector2(transform.position.x,(BottomWall.transform.position.y + (BottomWall.GetComponent<BoxCollider2D> ().size.y)*BottomWall.transform.localScale.y) + (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
+			HitWall = "BottomWall";
 		}else{
 			HitWall = "";
 		}
@@ -51,7 +51,7 @@ public class PlayerControls : MonoBehaviour {
 			UpDown = Mathf.Clamp(MousePosY-transform.position.y,-1,1);
 			if (HitWall=="TopWall" && UpDown!=-1) {
 				UpDown=0;
-			} else if (HitWall=="ButtomWall" && UpDown!=1){
+			} else if (HitWall=="BottomWall" && UpDown!=1){
 				UpDown=0;
 			}
 			rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,MousePosY)));
@@ -60,8 +60,9 @@ public class PlayerControls : MonoBehaviour {
 			Vector3 pos = rigidbody2D.transform.position;
 			if (Input.GetKey (moveUp) && HitWall!="TopWall") {
 				v.y = speed;
+				Debug.Log("Test");
 				rigidbody2D.velocity = v;
-			}	else if (Input.GetKey (moveDown) && HitWall!="ButtomWall") {
+			}	else if (Input.GetKey (moveDown) && HitWall!="BottomWall") {
 				v.y = speed * -1.0f;
 				rigidbody2D.velocity = v;
 			}	else {
@@ -81,7 +82,7 @@ public class PlayerControls : MonoBehaviour {
 						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
 						if (HitWall=="TopWall" && UpDown!=-1) {
 							UpDown=0;
-						} else if (HitWall=="ButtomWall" && UpDown!=1){
+						} else if (HitWall=="BottomWall" && UpDown!=1){
 							UpDown=0;
 						}
 						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
@@ -93,7 +94,7 @@ public class PlayerControls : MonoBehaviour {
 						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
 						if (HitWall=="TopWall" && UpDown!=-1) {
 							UpDown=0;
-						} else if (HitWall=="ButtomWall" && UpDown!=1){
+						} else if (HitWall=="BottomWall" && UpDown!=1){
 							UpDown=0;
 						}
 						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
@@ -105,7 +106,7 @@ public class PlayerControls : MonoBehaviour {
 				UpDown = 0;
 				rigidbody2D.velocity = new Vector2(0,0);
 			}
-			if( (transform.position.y <= TouchPosY && UpDown < 0 ) || HitWall=="ButtomWall" ){
+			if( (transform.position.y <= TouchPosY && UpDown < 0 ) || HitWall=="BottomWall" ){
 				UpDown = 0;
 				rigidbody2D.velocity = new Vector2(0,0);
 			}
