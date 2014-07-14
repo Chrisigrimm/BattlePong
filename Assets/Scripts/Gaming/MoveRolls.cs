@@ -8,13 +8,15 @@ public class MoveRolls : MonoBehaviour {
 
 	void Start(){
 		if(Player.name=="Player01"){
-			side=-1;
-		}else{
 			side=1;
+		}else{
+			side=-1;
 		}
 	}
 
 	void Update () {
-		transform.rotation = new Quaternion(0f,0f,(Player.transform.position.normalized.y*-4)*side,1f);
+		Quaternion test = transform.rotation;
+		test.eulerAngles = new Vector3 (0, 0, Player.transform.position.y*side);
+		transform.rotation = test;
 	}
 }

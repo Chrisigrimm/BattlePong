@@ -12,6 +12,7 @@ namespace Assets.Code.States{
 		private GameObject pausedPanel;
 		static int Score01, Score02;
 		private static GameObject GScore01, GScore02;
+		private GameObject Ball;
 
 		public GameState(StateManager managerRef){	
 			#if UNITY_ANDROID || UNITY_IPHONE
@@ -64,13 +65,13 @@ namespace Assets.Code.States{
 					Bot BotScript = Player01.AddComponent<Bot>();
 					if( StateManager.difficult == "Easy" ){
 						BotScript.ReaktionTime = 1f;
-						BotScript.speed = 5F;
+						BotScript.speed = 500F;
 					}else if( StateManager.difficult == "Normal" ){
 						BotScript.ReaktionTime = 1f;
-						BotScript.speed = 7f;
+						BotScript.speed = 700f;
 					}else if ( StateManager.difficult == "Hard" ){
 						BotScript.ReaktionTime = 0.122f;
-						BotScript.speed = 25f;
+						BotScript.speed = 2500f;
 					}
 				}
 				//Single-,Local- Player
@@ -95,9 +96,21 @@ namespace Assets.Code.States{
 						PlyControls1.speed = 20f;
 					}
 				}
+				//Ball
+				Ball = GameObject.Find("Ball");
 				//PauseMenue
 				pausedPanel = GameObject.Find("Window - Paused");
 				NGUITools.SetActive(pausedPanel,false);
+			}
+			//Wenn script geladen und Map geladen
+			if (scriptsLoaded) {
+				if( Ball.transform.position.x > Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x ){
+					Ball.SendMessage ("ResetBall");
+					Score("Right");
+				}else if( Ball.transform.position.x < -Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x ){
+					Ball.SendMessage ("ResetBall");
+					Score("Left");
+				}
 			}
 
 			if (Input.GetKeyDown ("escape")){
@@ -120,7 +133,7 @@ namespace Assets.Code.States{
 			if (Type == "OnClick"){
 				if (GmObj.name == "Restart") {
 					ResetScore ();
-					GameObject.Find ("Ball").SendMessage ("ResetBall");
+					Ball.SendMessage ("ResetBall");
 					if( StateManager.SinglePlayer ){
 						//Bot
 						GameObject.Find ("Player01").SendMessage ("ResetPath");
@@ -143,9 +156,9 @@ namespace Assets.Code.States{
 		}
 
 		// Set Score
-		public static void Score(string wallName){
-			if (wallName == "leftWall") {Score02 += 1;}
-			if (wallName == "rightWall") {Score01 += 1;}
+		public static void Score(string side){
+			if (side == "Left") {Score02 += 1;}
+			if (side == "Right") {Score01 += 1;}
 			GScore01.GetComponent<UILabel>().text = "" + Score01;
 			GScore02.GetComponent<UILabel>().text = "" + Score02;
 		}
