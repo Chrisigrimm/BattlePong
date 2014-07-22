@@ -64,14 +64,14 @@ namespace Assets.Code.States{
 					Player01 = GameObject.Find("Player01");
 					Bot BotScript = Player01.AddComponent<Bot>();
 					if( StateManager.difficult == "Easy" ){
-						BotScript.ReaktionTime = 1f;
-						BotScript.speed = 500F;
+						BotScript.ReaktionTime = 0.9f;
+						BotScript.speed = 2F;
 					}else if( StateManager.difficult == "Normal" ){
-						BotScript.ReaktionTime = 1f;
-						BotScript.speed = 700f;
+						BotScript.ReaktionTime = 0.6f;
+						BotScript.speed = 3F;
 					}else if ( StateManager.difficult == "Hard" ){
-						BotScript.ReaktionTime = 0.122f;
-						BotScript.speed = 2500f;
+						BotScript.ReaktionTime = 0.4f;
+						BotScript.speed = 4F;
 					}
 				}
 				//Single-,Local- Player

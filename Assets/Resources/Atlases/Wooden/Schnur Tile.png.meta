@@ -1,8 +1,6 @@
 fileFormatVersion: 2
-guid: 999a9430ccd010244b8b6fb19f475908
+guid: f234e6d8bbe80084eb324772d820e4db
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Ball
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,7 +23,7 @@ TextureImporter:
   textureFormat: 5
   maxTextureSize: 4096
   textureSettings:
-    filterMode: 0
+    filterMode: 2
     aniso: 1
     mipBias: -1
     wrapMode: 1

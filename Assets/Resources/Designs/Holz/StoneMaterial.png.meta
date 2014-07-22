@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: 6276663ed6878c348b04a1da845d3598
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: StoneMaterial
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

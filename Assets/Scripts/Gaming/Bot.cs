@@ -8,31 +8,25 @@ using Assets.Code.States;
 //////////////
 
 public class Bot : MonoBehaviour {
-	public float speed = 20.0f;
+	public float speed = 2f;
 	//Normal Human ReaktionTime
 	public float ReaktionTime = 0.112f;
 	private GameObject Ball;
-	private Vector2 BallDestinationPos;
 	private string SaveColideName ="";
 	private Vector2 SaveScore;
 	private RaycastHit2D hit;
-	private Vector2 Position;
-	private Vector2 savePos;
-	private Vector2 Direction;
-	private Vector2 saveDir;
-	private Vector2 ReflectScale;
+	private Vector2 Position, Direction, ReflectScale, BallDestinationPos;
 	private float Reaktion;
 	private int RandPos;
 	private Vector2 tempBallDestination;
 	private GameObject TopWall, BottomWall;
 	// Use this for initialization
 	void Start () {
-		//ScaleToFormat.getAspectRatio();
 		TopWall = GameObject.Find ("TopWall");
 		BottomWall = GameObject.Find ("BottomWall");
-		//speed = ScaleToFormat.getVel(new Vector2(0,speed),new Vector2(16,9)).y;
 		Ball = GameObject.FindGameObjectWithTag("Ball");
 		SaveScore = GameState.getScore();
+		Reaktion = Time.time + ReaktionTime;
 	}
 	
 	// Update is called once per frame
@@ -48,10 +42,6 @@ public class Bot : MonoBehaviour {
 		//--Killable--//
 		//Reaktion
 		/*if( Reaktion < Time.time){
-			if(Reaktion==0f){
-				Reaktion = Time.time + ReaktionTime;
-				//RandPos = Mathf.RoundToInt(Random.Range( -(transform.localScale.y*0.8f) , (transform.localScale.y*0.8f)));
-			}
 			if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
 				FindBallPath();
 			}
@@ -60,56 +50,49 @@ public class Bot : MonoBehaviour {
 			FindBallPath();
 		}
 		//--Move--//
-		float UpDown = Mathf.Clamp(BallDestinationPos.y-transform.position.y,-1,1);
+		float UpDown = BallDestinationPos.y - transform.position.y;
 		if (((TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y * 0.5f)) <
 		     (transform.position.y + (GetComponents<BoxCollider2D> () [0].size.y * 0.5f)))&& UpDown>0) {
-			transform.position = new Vector2(transform.position.x,(TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y)*TopWall.transform.localScale.y) - (GetComponents<BoxCollider2D> () [1].size.y * 0.5f)*transform.localScale.y);
+			transform.position = new Vector2(transform.position.x,(TopWall.transform.position.y - (TopWall.GetComponent<BoxCollider2D> ().size.y * 0.5f)) - (GetComponents<BoxCollider2D> () [0].size.y * 0.5f));
 			UpDown = 0;
 		}else if(((BottomWall.transform.position.y + (BottomWall.GetComponent<BoxCollider2D> ().size.y * 0.5f)) >
 		         (transform.position.y - (GetComponents<BoxCollider2D> () [0].size.y * 0.5f)))&& UpDown<0) {
 			transform.position = new Vector2(transform.position.x,(BottomWall.transform.position.y + (BottomWall.GetComponent<BoxCollider2D> ().size.y * 0.5f)) + (GetComponents<BoxCollider2D> () [0].size.y * 0.5f));
 			UpDown = 0;
 		}
-		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, speed * UpDown );
+		if( UpDown < 1 || UpDown > -1){
+			UpDown = UpDown * speed;
+		}
+		rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,  UpDown);
 	}
 
 	void FindBallPath(){
-		hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , 10 );
-		Debug.DrawLine(Position,BallDestinationPos);
+		hit = Physics2D.Raycast( Ball.transform.position , Ball.rigidbody2D.velocity , Mathf.Infinity , ~(1 << 10) );
+		Debug.DrawLine( Ball.transform.position,BallDestinationPos);
 		if( hit ){
-			Debug.Log(hit.collider.name);
-			if( hit.collider.name != "RailWall" ){
-			//letItSpin = Mathf.FloorToInt(Random.Range(Difficult,4));
-			BallDestinationPos = hit.point;
-				if( hit.collider.name == "TopWall" || hit.collider.name == "BottomWall" ){
-					if(hit.collider.name == "TopWall"){
-						ReflectScale = new Vector2(0,-Ball.GetComponent<CircleCollider2D>().radius);
-					}
-					if(hit.collider.name == "BottomWall"){
-						ReflectScale = new Vector2(0,Ball.GetComponent<CircleCollider2D>().radius);
-					}
-					if( SaveColideName == ""){
-						SaveColideName = hit.collider.name;
-						savePos = hit.point + ReflectScale;
-						saveDir = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);
-					}
-					if( SaveColideName != hit.collider.name){
-						SaveColideName = hit.collider.name;
-						savePos = hit.point + ReflectScale;
-						saveDir = new Vector2(saveDir.x,-saveDir.y);
-					}
-					Position = savePos;
-					Direction = saveDir;
+			if( hit.collider.name == "TopWall" || hit.collider.name == "BottomWall" ){
+				if(hit.collider.name != "Player01" || hit.collider.name != "RailWall"){
+						if(hit.collider.name == "TopWall"){
+							ReflectScale = new Vector2(0,-Ball.GetComponent<CircleCollider2D>().radius);
+						}
+						if(hit.collider.name == "BottomWall"){
+							ReflectScale = new Vector2(0,Ball.GetComponent<CircleCollider2D>().radius);
+						}
+						if( SaveColideName == ""){
+							SaveColideName = hit.collider.name;
+							Position = hit.point + ReflectScale;
+							Direction = new Vector2(Ball.rigidbody2D.velocity.x,-Ball.rigidbody2D.velocity.y);
+						}
+						if( SaveColideName != hit.collider.name){
+							SaveColideName = hit.collider.name;
+							Position = hit.point + ReflectScale;
+							Direction = new Vector2(Direction.x,-Direction.y);
+						}
+					hit = Physics2D.Raycast( Position , Direction , Mathf.Infinity , ~(1 << 10) );
 				}
-			}else{
-				BallDestinationPos = hit.point;
-				Position = Ball.transform.position;
-				Direction = Ball.rigidbody2D.velocity;
 			}
-		}else{
-			if( Ball.rigidbody2D.velocity.x!=0 && tempBallDestination==Vector2.zero){
-				Position = Ball.transform.position;
-				Direction = Ball.rigidbody2D.velocity;
+			if(hit.collider.name == "Player01" || hit.collider.name == "RailWall"){
+				BallDestinationPos = hit.point;
 			}
 		}
 	}
@@ -118,7 +101,7 @@ public class Bot : MonoBehaviour {
 		SaveColideName = "";
 		Position = Vector2.zero;
 		Direction = Vector2.zero;
-		Reaktion=0f;
+		Reaktion = Time.time + ReaktionTime;
 		tempBallDestination = Vector2.zero;
 	}	
 
