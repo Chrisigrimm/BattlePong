@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: b6877301215421048ba693e8f2c88b0a
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: SchnurMitte
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
