@@ -16,14 +16,9 @@ public class BallControl : MonoBehaviour {
 	private static float sballSpeed;
 	// Use this for initialization
 	void Start () {
-		/*ScaleToFormat.getAspectRatio();
-		ballSpeed = ScaleToFormat.getVel(new Vector2(ballSpeed,0),new Vector2(16,9)).x;
-		spread = Mathf.FloorToInt(ScaleToFormat.getVel(new Vector2(0,spread),new Vector2(16,9)).y);*/
-		//GameObject.Find("CountDown").SendMessage ("cDown");
 		maxVelocity = ballSpeed/5;
 		sballSpeed = maxVelocity;
 		Sound = GetComponent<AudioSource> ();
-		GoBall ();
 	}
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
@@ -49,16 +44,15 @@ public class BallControl : MonoBehaviour {
 	}
 
 	public void ResetBall(){
-		//gameObject.GetComponent<TrailRenderer>().enabled=false;
+		gameObject.GetComponent<TrailRenderer>().enabled=false;
 		rigidbody2D.velocity = new Vector2 (0, 0);
 		transform.position = new Vector3 (0, 0, transform.position.z);
 		//GameObject.Find("CountDown").SetActive(true);
 		//GameObject.Find("CountDown").SendMessage ("cDown");
-		GoBall ();
 	}
 
 	void GoBall(){
-		//gameObject.GetComponent<TrailRenderer>().enabled=true;
+		gameObject.GetComponent<TrailRenderer>().enabled=true;
 		int rNumber = Random.Range(0, 2);
 		if( rNumber <= 0.5){
 			rigidbody2D.AddForce( new Vector2(ballSpeed,Random.Range (-spread,spread)));
