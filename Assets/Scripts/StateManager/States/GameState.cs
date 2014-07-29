@@ -7,7 +7,7 @@ namespace Assets.Code.States{
 		
 		private StateManager manager;
 		private bool toggleESC, bCountDown = true;
-		private float savedTimeScale, timer, saveTimer;
+		private float savedTimeScale, saveTimer, timer;
 		private bool scriptsLoaded = false;
 		private GameObject PausePanel, CounterPanel;
 		static int Score1, Score2;
@@ -112,10 +112,8 @@ namespace Assets.Code.States{
 				//Countdown-Label
 				LCountDown = GameObject.Find("LCountDown");
 				//set Countdown to 3
-				saveTimer = 3;
-				timer = saveTimer;
 				CounterPanel = GameObject.Find("CounterPanel");
-				NGUITools.SetActive(CounterPanel,true);
+				CountDown(3);
 			}
 			//Wenn script geladen und Map geladen
 			if (scriptsLoaded) {
@@ -124,21 +122,32 @@ namespace Assets.Code.States{
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
 					Ball.SendMessage ("ResetBall");
 					Score("Right");
-					bCountDown = true;
-					NGUITools.SetActive(CounterPanel,true);
+					CountDown(3);
 				}
 				if( Ball.transform.position.x < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x ||
 				   (Ball.transform.position.x < 0 && (Ball.transform.position.y > -Camera.main.ScreenToWorldPoint(new Vector3(Screen.height,0,0)).y ||
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
 					Ball.SendMessage ("ResetBall");
 					Score("Left");
-					bCountDown = true;
-					NGUITools.SetActive(CounterPanel,true);
+					CountDown(3);
 				}
 
 				if (bCountDown) {
-					CountDown();
-					LCountDown.GetComponent<UILabel>().text = Mathf.Round(timer).ToString();
+					timer = -(RealTime.time - saveTimer);
+				
+					if(Mathf.Round(timer) >= timer){
+						CounterPanel.GetComponent<TweenScale>().Play();
+						LCountDown.GetComponent<TweenAlpha>().Play ();
+					}else{
+						CounterPanel.GetComponent<TweenScale>().ResetToBeginning();
+						LCountDown.GetComponent<TweenAlpha>().ResetToBeginning();
+					}
+					LCountDown.GetComponent<UILabel>().text = Mathf.RoundToInt(timer).ToString();
+					if(timer < -0.5){
+						bCountDown = false;
+						NGUITools.SetActive(CounterPanel,false);
+						Ball.SendMessage("GoBall");
+					}
 				}
 			}
 
@@ -204,30 +213,11 @@ namespace Assets.Code.States{
 			return new Vector2(Score1,Score2);
 		}
 
-		void CountDown(){
-			if(timer <= 0){
-				bCountDown = false;
-				timer = saveTimer;
-				Ball.SendMessage("GoBall");
-				NGUITools.SetActive(CounterPanel,false);
-			}else{
-				if( timer == 1 ){
-					CounterPanel.GetComponent<TweenScale>().Play();
-				}
-				else if( timer == 2 ){
-					//CounterPanel.GetComponent<TweenScale>().ResetToBeginning();
-					CounterPanel.GetComponent<TweenScale>().Play();
-				}
-				else if( timer == 3 ){
-					//CounterPanel.GetComponent<TweenScale>().ResetToBeginning();
-					CounterPanel.GetComponent<TweenScale>().Play();
-				}
-	
-
-				timer -= Time.deltaTime;
-			}
+		void CountDown(int CDTime){
+			bCountDown = true;
+			NGUITools.SetActive(CounterPanel,true);
+			saveTimer = RealTime.time + CDTime;
 		}
-
 
 		void PauseGame() {
 			NGUITools.SetActive(PausePanel,true);
