@@ -7,7 +7,7 @@ namespace Assets.Code.States{
 		
 		private StateManager manager;
 		private bool toggleESC, bCountDown = true;
-		private float savedTimeScale, saveTimer, timer;
+		private float savedTimeScale, saveTimer, timer, saveTime;
 		private bool scriptsLoaded = false;
 		private GameObject PausePanel, CounterPanel;
 		static int Score1, Score2;
@@ -134,13 +134,12 @@ namespace Assets.Code.States{
 
 				if (bCountDown) {
 					timer = -(RealTime.time - saveTimer);
-				
-					if(Mathf.Round(timer) >= timer){
-						CounterPanel.GetComponent<TweenScale>().Play();
-						LCountDown.GetComponent<TweenAlpha>().Play ();
-					}else{
+					if(Mathf.Round(timer) < saveTime){
 						CounterPanel.GetComponent<TweenScale>().ResetToBeginning();
 						LCountDown.GetComponent<TweenAlpha>().ResetToBeginning();
+						CounterPanel.GetComponent<TweenScale>().Play();
+						LCountDown.GetComponent<TweenAlpha>().Play ();
+						saveTime = Mathf.Round(timer);
 					}
 					LCountDown.GetComponent<UILabel>().text = Mathf.RoundToInt(timer).ToString();
 					if(timer < -0.5){
@@ -216,7 +215,8 @@ namespace Assets.Code.States{
 		void CountDown(int CDTime){
 			bCountDown = true;
 			NGUITools.SetActive(CounterPanel,true);
-			saveTimer = RealTime.time + CDTime;
+			saveTimer = RealTime.time + CDTime + 0.4f;
+			saveTime =  Mathf.Round(-(RealTime.time - saveTimer));
 		}
 
 		void PauseGame() {
