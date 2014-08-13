@@ -46,7 +46,6 @@ public class PlayerControls : MonoBehaviour {
 	void computerControl(){
 		if (StateManager.MouseControl) {
 			MousePosY = Camera.main.ScreenToWorldPoint(new Vector3(0,Input.mousePosition.y,0)).y;
-			//UpDown = Mathf.Clamp(MousePosY-transform.position.y,-1,1);
 			UpDown = MousePosY - transform.position.y;
 			if (HitWall=="TopWall" && UpDown>0) {
 				UpDown=0;
@@ -91,7 +90,7 @@ public class PlayerControls : MonoBehaviour {
 				if (rigidbody2D.name == "Player01") {
 					if (touch.position.x < Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
-						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+						UpDown = TouchPosY - transform.position.y;
 						if (HitWall=="TopWall" && UpDown>0) {
 							UpDown=0;
 						}else if(HitWall=="TopWall" && UpDown<0){
@@ -102,13 +101,16 @@ public class PlayerControls : MonoBehaviour {
 						}else if(HitWall=="BottomWall" && UpDown>0){
 							HitWall = "";
 						}
-						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
+						if( UpDown < 1 || UpDown > -1){
+							UpDown = UpDown * 8f;
+						}
+						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
 				}
 				if (rigidbody2D.name == "Player02") {
 					if (touch.position.x > Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
-						UpDown = Mathf.Clamp(TouchPosY-transform.position.y,-1,1);
+						UpDown = TouchPosY - transform.position.y;
 						if (HitWall=="TopWall" && UpDown>0) {
 							UpDown=0;
 						}else if(HitWall=="TopWall" && UpDown<0){
@@ -119,7 +121,10 @@ public class PlayerControls : MonoBehaviour {
 						}else if(HitWall=="BottomWall" && UpDown>0){
 							HitWall = "";
 						}
-						rigidbody2D.velocity = new Vector2(0, speed * UpDown * Vector2.Distance(new Vector2(0,transform.position.y), new Vector2(0,TouchPosY)));
+						if( UpDown < 1 || UpDown > -1){
+							UpDown = UpDown * 8f;
+						}
+						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
 				}
 			}

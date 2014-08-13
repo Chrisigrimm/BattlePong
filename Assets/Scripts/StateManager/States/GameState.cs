@@ -199,6 +199,7 @@ namespace Assets.Code.States{
 
 				if (GmObj.name == "Button-Menue") {
 					UnPauseGame ();
+					Time.timeScale = 1;
 					Screen.orientation = ScreenOrientation.Portrait;
 					manager.SwitchState (new MenüSate (manager));
 				}
@@ -235,14 +236,12 @@ namespace Assets.Code.States{
 		void PauseGame() {
 			NGUITools.SetActive(PausePanel,true);
 			Time.timeScale = 0;
-			AudioListener.pause = true;
 			bCountDown = false;
 			NGUITools.SetActive(CounterPanel,false);
 		}
 		
 		void UnPauseGame() {
 			NGUITools.SetActive(PausePanel,false);
-			AudioListener.pause = false;
 			if(CDAktion == "Reset"){
 				Time.timeScale = 1;
 				CountDown(3,"Reset");
