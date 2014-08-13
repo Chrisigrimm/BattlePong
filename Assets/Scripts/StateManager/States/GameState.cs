@@ -6,13 +6,14 @@ namespace Assets.Code.States{
 	public class GameState : IStateBase{
 		
 		private StateManager manager;
-		private bool toggleESC, bCountDown = true;
+		private bool toggleESC, bCountDown;
 		private float savedTimeScale, saveTimer, timer, saveTime;
 		private bool scriptsLoaded = false;
 		private GameObject PausePanel, CounterPanel;
 		static int Score1, Score2;
 		private static GameObject GScore1, GScore2, Name1, Name2, LCountDown;
 		private GameObject Ball;
+		private string CDAktion;
 
 		public GameState(StateManager managerRef){	
 			#if UNITY_ANDROID || UNITY_IPHONE
@@ -107,13 +108,13 @@ namespace Assets.Code.States{
 				//Ball
 				Ball = GameObject.Find("Ball");
 				//PauseMenue
-				PausePanel = GameObject.Find("Window - Paused");
+				PausePanel = GameObject.Find("PausePanel");
 				NGUITools.SetActive(PausePanel,false);
 				//Countdown-Label
 				LCountDown = GameObject.Find("LCountDown");
 				//set Countdown to 3
 				CounterPanel = GameObject.Find("CounterPanel");
-				CountDown(3);
+				CountDown(3,"Reset");
 			}
 			//Wenn script geladen und Map geladen
 			if (scriptsLoaded) {
@@ -122,18 +123,18 @@ namespace Assets.Code.States{
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
 					Ball.SendMessage ("ResetBall");
 					Score("Right");
-					CountDown(3);
+					CountDown(3,"Reset");
 				}
 				if( Ball.transform.position.x < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x ||
 				   (Ball.transform.position.x < 0 && (Ball.transform.position.y > -Camera.main.ScreenToWorldPoint(new Vector3(Screen.height,0,0)).y ||
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
 					Ball.SendMessage ("ResetBall");
 					Score("Left");
-					CountDown(3);
+					CountDown(3,"Reset");
 				}
 
 				if (bCountDown) {
-					timer = -(RealTime.time - saveTimer);
+					timer = saveTimer - RealTime.time;
 					if(Mathf.Round(timer) < saveTime){
 						CounterPanel.GetComponent<TweenScale>().ResetToBeginning();
 						LCountDown.GetComponent<TweenAlpha>().ResetToBeginning();
@@ -145,7 +146,13 @@ namespace Assets.Code.States{
 					if(timer < -0.5){
 						bCountDown = false;
 						NGUITools.SetActive(CounterPanel,false);
-						Ball.SendMessage("GoBall");
+						timer = 0;
+						if(CDAktion == "Reset"){
+							Ball.SendMessage("GoBall");
+						}else if(CDAktion == "Pause"){
+							Time.timeScale = 1;
+						}
+						CDAktion = "";
 					}
 				}
 			}
@@ -169,7 +176,11 @@ namespace Assets.Code.States{
 		// Feedback from NGUI send by Statemanager
 		public void NGUIfeedback(GameObject GmObj, string Type){
 			if (Type == "OnClick"){
-				if (GmObj.name == "Restart") {
+				if (GmObj.name == "Button-Continue") {
+					UnPauseGame ();
+				}
+
+				if (GmObj.name == "Button-Restart") {
 					ResetScore ();
 					Ball.SendMessage ("ResetBall");
 					if( StateManager.SinglePlayer ){
@@ -185,7 +196,8 @@ namespace Assets.Code.States{
 					}
 					UnPauseGame ();
 				}
-				if (GmObj.name == "Menü") {
+
+				if (GmObj.name == "Button-Menue") {
 					UnPauseGame ();
 					Screen.orientation = ScreenOrientation.Portrait;
 					manager.SwitchState (new MenüSate (manager));
@@ -209,27 +221,34 @@ namespace Assets.Code.States{
 		}
 
 		public static Vector2 getScore(){
-			return new Vector2(Score1,Score2);
+			return new Vector2(Score1,Score2); 
 		}
 
-		void CountDown(int CDTime){
+		void CountDown(int CDTime, string mAktion){
 			bCountDown = true;
 			NGUITools.SetActive(CounterPanel,true);
 			saveTimer = RealTime.time + CDTime + 0.4f;
-			saveTime =  Mathf.Round(-(RealTime.time - saveTimer));
+			saveTime =  Mathf.Round((saveTimer - RealTime.time));
+			CDAktion = mAktion;
 		}
 
 		void PauseGame() {
 			NGUITools.SetActive(PausePanel,true);
-			savedTimeScale = Time.timeScale;
 			Time.timeScale = 0;
 			AudioListener.pause = true;
+			bCountDown = false;
+			NGUITools.SetActive(CounterPanel,false);
 		}
 		
 		void UnPauseGame() {
 			NGUITools.SetActive(PausePanel,false);
-			Time.timeScale = savedTimeScale;
 			AudioListener.pause = false;
+			if(CDAktion == "Reset"){
+				Time.timeScale = 1;
+				CountDown(3,"Reset");
+			}else{
+				CountDown(3,"Pause");
+			}
 		}
 	}
 }
