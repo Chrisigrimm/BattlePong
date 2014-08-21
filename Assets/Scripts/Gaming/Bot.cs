@@ -26,7 +26,7 @@ public class Bot : MonoBehaviour {
 		BottomWall = GameObject.Find ("BottomWall");
 		Ball = GameObject.FindGameObjectWithTag("Ball");
 		SaveScore = GameState.getScore();
-		Reaktion = Time.time + ReaktionTime;
+		Reaktion = RealTime.time + ReaktionTime;
 	}
 	
 	// Update is called once per frame
@@ -41,15 +41,12 @@ public class Bot : MonoBehaviour {
 	void AI(){ 	
 		//--Killable--//
 		//Reaktion
-		/*if( Reaktion < Time.time){
+		if( Reaktion < RealTime.time){
 			if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
-				FindBallPath();
-			}
-		}*/
-		if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
-			if(tempBallDestination == Vector2.zero){
-				FindBallPath();
-			}else{
+				if(tempBallDestination == Vector2.zero){
+					FindBallPath();
+				}else{
+				}
 			}
 		}
 		//--Move--//
@@ -98,6 +95,11 @@ public class Bot : MonoBehaviour {
 				BallDestinationPos = hit.point;
 				tempBallDestination = hit.point;
 			}
+		}else{
+			SaveColideName = "";
+			Position = Vector2.zero;
+			Direction = Vector2.zero;
+			tempBallDestination = Vector2.zero;
 		}
 	}
 	
@@ -105,7 +107,7 @@ public class Bot : MonoBehaviour {
 		SaveColideName = "";
 		Position = Vector2.zero;
 		Direction = Vector2.zero;
-		Reaktion = Time.time + ReaktionTime;
+		Reaktion = RealTime.time + ReaktionTime;
 		tempBallDestination = Vector2.zero;
 	}	
 

@@ -15,7 +15,7 @@ public class BallControl : MonoBehaviour {
 	private AudioSource Sound;
 	// Use this for initialization
 	void Start () {
-		maxVelocity = new Vector2(ballSpeed/5,ballSpeed/3f);
+		maxVelocity = new Vector2(ballSpeed/5,ballSpeed/5);
 		Sound = GetComponent<AudioSource> ();
 	}
 
@@ -45,8 +45,6 @@ public class BallControl : MonoBehaviour {
 		gameObject.GetComponent<TrailRenderer>().enabled=false;
 		rigidbody2D.velocity = new Vector2 (0, 0);
 		transform.position = new Vector3 (0, 0, transform.position.z);
-		//GameObject.Find("CountDown").SetActive(true);
-		//GameObject.Find("CountDown").SendMessage ("cDown");
 	}
 
 	void GoBall(){
@@ -62,25 +60,42 @@ public class BallControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Mathf.Abs(rigidbody2D.velocity.x) < maxVelocity.x)
-		{
+		if(Mathf.Abs(rigidbody2D.velocity.x) < maxVelocity.x){
 			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity.x;
-			rigidbody2D.velocity = newVelocity;
-		}else if(Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity.y){
+			newVelocity.x *= maxVelocity.x;
+			rigidbody2D.velocity = new Vector2(newVelocity.x,rigidbody2D.velocity.y);
+		}
+		if(Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity.y){
 			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity.x;
+			newVelocity.y *= maxVelocity.y;
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,newVelocity.y);
+		}
+
+		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity.x){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity.x *= maxVelocity.x;
+			rigidbody2D.velocity = new Vector2(newVelocity.x,rigidbody2D.velocity.y);
+		}
+		if(Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity.y){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity.y *= maxVelocity.y;
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,newVelocity.y);
+		}
+
+		/*if(Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity.y){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity.y *= maxVelocity.y;
 			rigidbody2D.velocity = newVelocity;
 		}
-		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity.x)
-		{
+		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity.x){
 			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity.x;
-			rigidbody2D.velocity = newVelocity;
-		}else if(Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity.y){
-			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity.x;
+			newVelocity.x *= maxVelocity.x;
 			rigidbody2D.velocity = newVelocity;
 		}
+		if(Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity.y){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity.y *= maxVelocity.y;
+			rigidbody2D.velocity = newVelocity;
+		}*/
 	}
 }

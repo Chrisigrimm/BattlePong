@@ -79,7 +79,7 @@ namespace Assets.Code.States{
 						BotScript.ReaktionTime = 0.6f;
 						BotScript.speed = 3F;
 					}else if ( StateManager.difficult == "Hard" ){
-						BotScript.ReaktionTime = 0.4f;
+						BotScript.ReaktionTime = 0.3f;
 						BotScript.speed = 4F;
 					}
 				}
