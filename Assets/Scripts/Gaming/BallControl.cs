@@ -11,13 +11,11 @@ public class BallControl : MonoBehaviour {
 	public int spread = 15;
 	public AudioClip Hit1;
 	public AudioClip Hit2;
-	private float maxVelocity;
+	private Vector2 maxVelocity;
 	private AudioSource Sound;
-	private static float sballSpeed;
 	// Use this for initialization
 	void Start () {
-		maxVelocity = ballSpeed/5;
-		sballSpeed = maxVelocity;
+		maxVelocity = new Vector2(ballSpeed/5,ballSpeed/3f);
 		Sound = GetComponent<AudioSource> ();
 	}
 
@@ -64,23 +62,24 @@ public class BallControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	}
-
-	public static float getmaxVelocity(){
-		return sballSpeed;
-	}
-
-	void FixedUpdate() {
-		if(Mathf.Abs(rigidbody2D.velocity.x) < maxVelocity || Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity)
+		if(Mathf.Abs(rigidbody2D.velocity.x) < maxVelocity.x)
 		{
 			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity;
+			newVelocity *= maxVelocity.x;
+			rigidbody2D.velocity = newVelocity;
+		}else if(Mathf.Abs(rigidbody2D.velocity.y) < maxVelocity.y){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity *= maxVelocity.x;
 			rigidbody2D.velocity = newVelocity;
 		}
-		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity || Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity)
+		if(Mathf.Abs(rigidbody2D.velocity.x) > maxVelocity.x)
 		{
 			Vector2 newVelocity = rigidbody2D.velocity.normalized;
-			newVelocity *= maxVelocity;
+			newVelocity *= maxVelocity.x;
+			rigidbody2D.velocity = newVelocity;
+		}else if(Mathf.Abs(rigidbody2D.velocity.y) > maxVelocity.y){
+			Vector2 newVelocity = rigidbody2D.velocity.normalized;
+			newVelocity *= maxVelocity.x;
 			rigidbody2D.velocity = newVelocity;
 		}
 	}

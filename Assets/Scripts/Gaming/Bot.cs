@@ -47,7 +47,10 @@ public class Bot : MonoBehaviour {
 			}
 		}*/
 		if(Mathf.Clamp(Ball.rigidbody2D.velocity.x,-1,1) == Mathf.Clamp(transform.position.x,-1,1)){
-			FindBallPath();
+			if(tempBallDestination == Vector2.zero){
+				FindBallPath();
+			}else{
+			}
 		}
 		//--Move--//
 		float UpDown = BallDestinationPos.y - transform.position.y;
@@ -93,6 +96,7 @@ public class Bot : MonoBehaviour {
 			}
 			if(hit.collider.name == "Player01" || hit.collider.name == "RailWall"){
 				BallDestinationPos = hit.point;
+				tempBallDestination = hit.point;
 			}
 		}
 	}
@@ -105,7 +109,7 @@ public class Bot : MonoBehaviour {
 		tempBallDestination = Vector2.zero;
 	}	
 
-	void spinBall(){
+/*	void spinBall(){
 		if(tempBallDestination == Vector2.zero){
 			tempBallDestination = BallDestinationPos;
 		}
@@ -116,7 +120,7 @@ public class Bot : MonoBehaviour {
 		}else{
 			BallDestinationPos = transform.position + new Vector3((GetComponents<BoxCollider2D>()[0].size.x*0.5f)*transform.localScale.x,0,0)*Mathf.Clamp(Direction.x,1,-1);
 		}
-	}
+	}*/
 
 	void OnCollisionEnter2D( Collision2D colInfo ){	
 		if (colInfo.collider.tag == "Ball") {

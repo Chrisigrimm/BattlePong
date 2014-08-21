@@ -6,7 +6,7 @@ namespace Assets.Code.States{
 	public class GameState : IStateBase{
 		
 		private StateManager manager;
-		private bool toggleESC, bCountDown;
+		private bool toggleESC = false, bCountDown;
 		private float savedTimeScale, saveTimer, timer, saveTime;
 		private bool scriptsLoaded = false;
 		private GameObject PausePanel, CounterPanel;
@@ -87,12 +87,18 @@ namespace Assets.Code.States{
 				if( StateManager.SinglePlayer || StateManager.LocalCoop ){
 					//Player2
 					Name2.GetComponent<UILabel>().text = StateManager.Username;
-					PlayerControls PlyControls = Player02.AddComponent<PlayerControls>();
+					PlayerControls PlyControls2 = Player02.AddComponent<PlayerControls>();
 					#if !UNITY_ANDROID && !UNITY_IPHONE
-					PlyControls.moveUp = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player1Up);
-					PlyControls.moveDown = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player1Down);
+					PlyControls2.moveUp = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player1Up);
+					PlyControls2.moveDown = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player1Down);
+					if(StateManager.MouseControl){
+						PlyControls2.speed = 20f;
+					}else{
+						PlyControls2.speed = 2000f;
+					}
+					#else
+					PlyControls2.speed = 20f;
 					#endif
-					PlyControls.speed = 2000f;
 				
 					if( StateManager.LocalCoop ){
 						//Player1
@@ -101,8 +107,14 @@ namespace Assets.Code.States{
 						#if !UNITY_ANDROID && !UNITY_IPHONE
 						PlyControls1.moveUp = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player2Up);
 						PlyControls1.moveDown = (KeyCode) System.Enum.Parse(typeof(KeyCode), StateManager.Player2Down);
+						if(StateManager.MouseControl){
+							PlyControls1.speed = 20f;
+						}else{
+							PlyControls1.speed = 2000f;
+						}
+						#else
+						PlyControls1.speed = 20f;
 						#endif
-						PlyControls1.speed = 2000f;
 					}
 				}
 				//Ball
@@ -152,13 +164,13 @@ namespace Assets.Code.States{
 						}else if(CDAktion == "Pause"){
 							Time.timeScale = 1;
 						}
-						CDAktion = "";
+						CDAktion = null;
 					}
 				}
 			}
 
 			if (Input.GetKeyDown ("escape")){
-				toggleESC=!toggleESC;
+				toggleESC = !toggleESC;
 				if( toggleESC == true ){
 					PauseGame();
 				}else {
@@ -177,10 +189,12 @@ namespace Assets.Code.States{
 		public void NGUIfeedback(GameObject GmObj, string Type){
 			if (Type == "OnClick"){
 				if (GmObj.name == "Button-Continue") {
+					toggleESC = !toggleESC;
 					UnPauseGame ();
 				}
 
 				if (GmObj.name == "Button-Restart") {
+					toggleESC = !toggleESC;
 					ResetScore ();
 					Ball.SendMessage ("ResetBall");
 					if( StateManager.SinglePlayer ){
@@ -194,6 +208,7 @@ namespace Assets.Code.States{
 							GameObject.Find ("Player01").SendMessage ("ResetPlayer");
 						}
 					}
+					CDAktion = "Reset";
 					UnPauseGame ();
 				}
 

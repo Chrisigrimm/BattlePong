@@ -58,7 +58,7 @@ public class PlayerControls : MonoBehaviour {
 				HitWall = "";
 			}
 			if( UpDown < 1 || UpDown > -1){
-				UpDown = UpDown * 8f;
+				UpDown = UpDown * speed;
 			}
 			rigidbody2D.velocity = new Vector2(0, UpDown );
 		}else{
@@ -102,7 +102,7 @@ public class PlayerControls : MonoBehaviour {
 							HitWall = "";
 						}
 						if( UpDown < 1 || UpDown > -1){
-							UpDown = UpDown * 8f;
+							UpDown = UpDown * speed;
 						}
 						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
@@ -122,20 +122,11 @@ public class PlayerControls : MonoBehaviour {
 							HitWall = "";
 						}
 						if( UpDown < 1 || UpDown > -1){
-							UpDown = UpDown * 8f;
+							UpDown = UpDown * speed;
 						}
 						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
 				}
-			}
-		}else{
-			if(( transform.position.y >= TouchPosY && UpDown > 0) || HitWall=="TopWall" ){
-				UpDown = 0;
-				rigidbody2D.velocity = new Vector2(0,0);
-			}
-			if( (transform.position.y <= TouchPosY && UpDown < 0 ) || HitWall=="BottomWall" ){
-				UpDown = 0;
-				rigidbody2D.velocity = new Vector2(0,0);
 			}
 		}
 	}
