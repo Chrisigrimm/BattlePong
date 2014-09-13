@@ -13,8 +13,10 @@ public class BallControl : MonoBehaviour {
 	public AudioClip Hit2;
 	private Vector2 maxVelocity;
 	private AudioSource Sound;
+	public static float sBallSpeed;
 	// Use this for initialization
 	void Start () {
+		sBallSpeed = ballSpeed;
 		maxVelocity = new Vector2(ballSpeed/5,ballSpeed/5);
 		Sound = GetComponent<AudioSource> ();
 	}
