@@ -73,13 +73,13 @@ namespace Assets.Code.States{
 					Name1.GetComponent<UILabel>().text = "Bot - Siegfried";
 					Bot BotScript = Player01.AddComponent<Bot>();
 					if( StateManager.difficult == "Easy" ){
-						BotScript.ReaktionTime = 0.9f;
+						BotScript.ReaktionTime = 1f;
 						BotScript.speed = 2F;
 					}else if( StateManager.difficult == "Normal" ){
-						BotScript.ReaktionTime = 0.6f;
+						BotScript.ReaktionTime = 0.65f;
 						BotScript.speed = 3F;
 					}else if ( StateManager.difficult == "Hard" ){
-						BotScript.ReaktionTime = 0.3f;
+						BotScript.ReaktionTime = 0.5f;
 						BotScript.speed = 4F;
 					}
 				}
