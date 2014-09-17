@@ -8,16 +8,18 @@ public class StateManager : MonoBehaviour {
 
 	private IStateBase activeState;
 	private static StateManager instanceRef;
-	//GameModes
+	//Modus
 	public static bool SinglePlayer, LocalCoop;
+	//Gamemodus
+	public static string GameModus;
+	//Difficult
+	public static string difficult;
 	//Settings
 	[SerializeThis]
 	public static string Username;
 	public static string Player1Up, Player1Down;
 	public static string Player2Up, Player2Down;
 	public static bool MouseControl;
-	//Difficult
-	public static string difficult;
 
 	void Awake (){
 		if (instanceRef == null) {

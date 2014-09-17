@@ -89,6 +89,7 @@ namespace Assets.Code.States{
 				if (GmObj.name == "SinglePlayer") {
 					StateManager.SinglePlayer = true;
 					StateManager.difficult = GameObject.Find("PopUpList-Difficult").GetComponent<UIPopupList>().value;
+					StateManager.GameModus = GameObject.Find("PopUpList-Mode").GetComponent<UIPopupList>().value;	
 					manager.SwitchState (new GameState (manager));
 					Slideeffect.getSlided = false;
 					TweenSlider.ShowMenue = null;

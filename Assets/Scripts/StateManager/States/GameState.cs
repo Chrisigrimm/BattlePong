@@ -9,11 +9,12 @@ namespace Assets.Code.States{
 		private bool toggleESC = false, bCountDown;
 		private float savedTimeScale, saveTimer, timer, saveTime;
 		private bool scriptsLoaded = false;
-		private GameObject PausePanel, CounterPanel;
+		private GameObject PausePanel, CounterPanel, FinishPanel;
 		static int Score1, Score2;
 		private static GameObject GScore1, GScore2, Name1, Name2, LCountDown;
 		private GameObject Ball;
 		private string CDAktion;
+		private int maxScore;
 
 		public GameState(StateManager managerRef){	
 			#if UNITY_ANDROID || UNITY_IPHONE
@@ -22,13 +23,13 @@ namespace Assets.Code.States{
 
 			manager = managerRef;
 
-			if (Application.loadedLevelName != "NewGame")
-				Application.LoadLevel ("NewGame");
+			if (Application.loadedLevelName != "Game")
+				Application.LoadLevel ("Game");
 		}
 
 		public void StateUpdate(){
 			//Load Controls... Name etc... on Start and everything loaded
-			if (Application.loadedLevelName == "NewGame" && !scriptsLoaded && Time.timeSinceLevelLoad>0.1f) {
+			if (Application.loadedLevelName == "Game" && !scriptsLoaded && Time.timeSinceLevelLoad>0.1f) {
 				scriptsLoaded = true;
 				//Scale
 				float targetaspect = 16.0f / 9.0f;
@@ -55,6 +56,7 @@ namespace Assets.Code.States{
 					
 					Camera.main.rect = rect;
 				}
+				//-- Get World Object for interaction
 				//Score
 				GScore1 = GameObject.Find("Score1");
 				GScore2 = GameObject.Find("Score2");
@@ -66,8 +68,29 @@ namespace Assets.Code.States{
 				GameObject Player01, Player02;
 				Player01 = GameObject.Find("Player01");
 				Player02 = GameObject.Find("Player02");
-				//SinglePlayer
 
+				//Ball
+				Ball = GameObject.Find("Ball");
+				//Countdown-Label
+				LCountDown = GameObject.Find("LCountDown");
+				//Panels
+				CounterPanel = GameObject.Find("CounterPanel");
+				NGUITools.SetActive(CounterPanel,false);
+				PausePanel = GameObject.Find("PausePanel");
+				NGUITools.SetActive(PausePanel,false);
+				FinishPanel = GameObject.Find("FinishPanel");
+				NGUITools.SetActive(FinishPanel,false);
+				//--GameModus
+				maxScore = 10;
+				if( StateManager.GameModus == "Standard" ){
+					maxScore = 10;
+				}
+				if( StateManager.GameModus == "Survival" ){
+					maxScore = 1;
+				}
+
+				//--PlayModus
+				//SinglePlayer
 				if( StateManager.SinglePlayer ){
 					//Bot
 					Name1.GetComponent<UILabel>().text = "Bot - Siegfried";
@@ -117,32 +140,21 @@ namespace Assets.Code.States{
 						#endif
 					}
 				}
-				//Ball
-				Ball = GameObject.Find("Ball");
-				//PauseMenue
-				PausePanel = GameObject.Find("PausePanel");
-				NGUITools.SetActive(PausePanel,false);
-				//Countdown-Label
-				LCountDown = GameObject.Find("LCountDown");
-				//set Countdown to 3
-				CounterPanel = GameObject.Find("CounterPanel");
+
+				//Start Countdown
 				CountDown(3,"Reset");
 			}
 			//Wenn script geladen und Map geladen
-			if (scriptsLoaded) {
+			if (scriptsLoaded && !GameFinished()) {
 				if( Ball.transform.position.x > Camera.main.ScreenToWorldPoint(new Vector3(Screen.width,0,0)).x ||
 				   (Ball.transform.position.x > 0 && (Ball.transform.position.y > -Camera.main.ScreenToWorldPoint(new Vector3(Screen.height,0,0)).y ||
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
-					Ball.SendMessage ("ResetBall");
 					Score("Right");
-					CountDown(3,"Reset");
 				}
 				if( Ball.transform.position.x < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).x ||
 				   (Ball.transform.position.x < 0 && (Ball.transform.position.y > -Camera.main.ScreenToWorldPoint(new Vector3(Screen.height,0,0)).y ||
 				    Ball.transform.position.y < Camera.main.ScreenToWorldPoint(new Vector3(0,0,0)).y))){
-					Ball.SendMessage ("ResetBall");
 					Score("Left");
-					CountDown(3,"Reset");
 				}
 
 				if (bCountDown) {
@@ -194,6 +206,7 @@ namespace Assets.Code.States{
 				}
 
 				if (GmObj.name == "Button-Restart") {
+					NGUITools.SetActive(FinishPanel,false);
 					toggleESC = !toggleESC;
 					ResetScore ();
 					Ball.SendMessage ("ResetBall");
@@ -222,11 +235,44 @@ namespace Assets.Code.States{
 		}
 
 		// Set Score
-		public static void Score(string side){
+		void Score(string side){
 			if (side == "Left") {Score2 += 1;}
 			if (side == "Right") {Score1 += 1;}
 			GScore1.GetComponent<UILabel>().text = "" + Score1;
 			GScore2.GetComponent<UILabel>().text = "" + Score2;
+			//Check if game finished
+			if(!GameFinished()){
+				Ball.SendMessage ("ResetBall");
+				CountDown(3,"Reset");
+			}else{
+				Time.timeScale = 0;
+				bCountDown = false;
+				NGUITools.SetActive(CounterPanel,false);
+				NGUITools.SetActive(FinishPanel,true);
+				if( StateManager.SinglePlayer ){
+					if( Score2 == maxScore ){
+						FinishPanel.transform.FindChild("Label").GetComponent<UILabel>().text = "You Won!";
+					}else{
+						FinishPanel.transform.FindChild("Label").GetComponent<UILabel>().text = "You Lost!";
+					}
+				}
+				if( StateManager.LocalCoop ){
+					if( Score2 == maxScore ){
+						FinishPanel.transform.FindChild("Label").GetComponent<UILabel>().text = StateManager.Username+" Won!";
+					}else{
+						FinishPanel.transform.FindChild("Label").GetComponent<UILabel>().text = "Your Friend Won!";
+					}
+				}
+				FinishPanel.transform.FindChild("Label").GetComponent<TypewriterEffect>().enabled = true;
+			}
+		}
+
+		// Finsih
+		bool GameFinished(){
+			if(Score1 >= maxScore || Score2 >= maxScore){
+				return true;
+			}
+			return false;
 		}
 
 		public static void ResetScore(){
