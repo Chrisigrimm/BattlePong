@@ -90,45 +90,30 @@ public class PlayerControls : MonoBehaviour {
 				if (rigidbody2D.name == "Player01") {
 					if (touch.position.x < Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
-						UpDown = TouchPosY - transform.position.y;
-						if (HitWall=="TopWall" && UpDown>0) {
-							UpDown=0;
-						}else if(HitWall=="TopWall" && UpDown<0){
-							HitWall = "";
-						}
-						if (HitWall=="BottomWall" && UpDown<0){
-							UpDown=0;
-						}else if(HitWall=="BottomWall" && UpDown>0){
-							HitWall = "";
-						}
-						if( UpDown < 1 || UpDown > -1){
-							UpDown = UpDown * speed;
-						}
-						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
 				}
 				if (rigidbody2D.name == "Player02") {
 					if (touch.position.x > Screen.width / 2) {
 						TouchPosY = Camera.main.ScreenToWorldPoint(new Vector3(0,touch.position.y,0)).y;
-						UpDown = TouchPosY - transform.position.y;
-						if (HitWall=="TopWall" && UpDown>0) {
-							UpDown=0;
-						}else if(HitWall=="TopWall" && UpDown<0){
-							HitWall = "";
-						}
-						if (HitWall=="BottomWall" && UpDown<0){
-							UpDown=0;
-						}else if(HitWall=="BottomWall" && UpDown>0){
-							HitWall = "";
-						}
-						if( UpDown < 1 || UpDown > -1){
-							UpDown = UpDown * speed;
-						}
-						rigidbody2D.velocity = new Vector2(0, UpDown);
 					}
 				}
 			}
 		}
+		UpDown = TouchPosY - transform.position.y;
+		if (HitWall=="TopWall" && UpDown>0) {
+			UpDown=0;
+		}else if(HitWall=="TopWall" && UpDown<0){
+			HitWall = "";
+		}
+		if (HitWall=="BottomWall" && UpDown<0){
+			UpDown=0;
+		}else if(HitWall=="BottomWall" && UpDown>0){
+			HitWall = "";
+		}
+		if( UpDown < 1 || UpDown > -1){
+			UpDown = UpDown * speed;
+		}
+		rigidbody2D.velocity = new Vector2(0, UpDown);
 	}
 
 	void ResetPlayer(){

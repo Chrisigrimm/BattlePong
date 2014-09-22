@@ -63,4 +63,6 @@ public class StateManager : MonoBehaviour {
 	public void OnSubmit(GameObject GmObj){
 		activeState.NGUIfeedback (GmObj, "OnSubmit");
 	}
+
+
 }

@@ -189,6 +189,13 @@ namespace Assets.Code.States{
 					UnPauseGame();
 				}
 			}
+			#if UNITY_ANDROID  && !UNITY_EDITOR
+			if( NaturalOrientation.GetDeviceDefaultOrientation() == "LANDSCAPE"){
+				NGUITools.SetActive(PausePanel,true);
+			}else{
+				NGUITools.SetActive(PausePanel,false);
+			}
+			#endif
 		}
 
 		public void StateLateUpdate(){
@@ -310,5 +317,6 @@ namespace Assets.Code.States{
 				CountDown(3,"Pause");
 			}
 		}
+	
 	}
 }
